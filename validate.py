@@ -1,9 +1,11 @@
+#!/usr/bin/python
+
+import sys
 import os
 import glob
 import json
-from pyjavaproperties import Properties
-
 import yaml 
+from pyjavaproperties import Properties
 
 # The background colors used below
 class bcolors:
@@ -18,10 +20,17 @@ class bcolors:
 # Current directory path where this is executing
 currentDirPath = os.path.dirname(os.path.realpath(__file__))
 
+# The user can pass the dir as a parameter
+if len(sys.argv) > 1:
+  if os.path.isdir(sys.argv[1]):
+    currentDirPath = sys.argv[1]
+    print bcolors.WARNING + "=> Validating directory " + currentDirPath
+
 # List the config files based on the given extension.
 def listConfigFiles(extension):
   return glob.glob(os.path.join(currentDirPath, extension))
 
+# Listing all the valid spring cloud configuration files.
 def listAllConfigFiles():
   configMatches = ["*.json", "*.yaml", "*.yml", "*.properties", ".*matrix*.json"]
 
@@ -79,16 +88,22 @@ def validateConfigs():
 
   return fileValidatesIndex
 
+# Starting the process
 print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
 print bcolors.BOLD + bcolors.OKBLUE + "###### Intuit Spring Cloud Config Validator ######" + bcolors.ENDC
 print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
 
+# Load the validation of the config files
 validationIndex = validateConfigs()
+
+# Iterate over the index of the verifications
 for filePath, isValid in validationIndex.iteritems():
   if isValid == True:
     # http://www.fileformat.info/info/unicode/char/2714/index.htm
-    print bcolors.OKGREEN + str(u'\u2714'.encode('UTF-8')) + " File " + filePath + " is valid!" + bcolors.ENDC
+    v = str(u'\u2714'.encode('UTF-8'))
+    print bcolors.OKGREEN + v + " File " + filePath + " is valid!" + bcolors.ENDC
 
   else:
     # http://www.fileformat.info/info/unicode/char/2718/index.htm
-    print bcolors.FAIL + str(u'\u2718'.encode('UTF-8')) + " File " + filePath + " is NOT valid: " + str(isValid) + bcolors.ENDC
+    x = str(u'\u2718'.encode('UTF-8'))
+    print bcolors.FAIL + x + " File " + filePath + " is NOT valid: " + str(isValid) + bcolors.ENDC
