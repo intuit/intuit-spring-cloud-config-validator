@@ -15,15 +15,17 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
 
-# Current directory path
+# Current directory path where this is executing
 currentDirPath = os.path.dirname(os.path.realpath(__file__))
 
+# List the config files based on the given extension.
 def listConfigFiles(extension):
   return glob.glob(os.path.join(currentDirPath, extension))
 
 def listAllConfigFiles():
   configMatches = ["*.json", "*.yaml", "*.yml", "*.properties", ".*matrix*.json"]
 
+  # Get all the types config files based on the matches.
   allConfigs = []
   for configMatch in configMatches:
     allConfigs = allConfigs + listConfigFiles(configMatch)
@@ -59,8 +61,9 @@ def isYamlFileValid(filePath):
   except yaml.parser.ParserError, invalidYamlError:
     return invalidYamlError
 
+# Generates an index of the config files and the associated exception, if any
 def validateConfigs():
-  # The index of the files and if they are valid
+  # The index of the files and if they are valid name=True | Exception
   fileValidatesIndex = {}
 
   # Iterate over all config files, validating according to their extension
