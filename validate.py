@@ -3,6 +3,8 @@ import glob
 import json
 from pyjavaproperties import Properties
 
+import yaml 
+
 # The background colors used below
 class bcolors:
     HEADER = '\033[95m'
@@ -50,6 +52,16 @@ def isPropertiesFileValid(filePath):
     print invalidPropertiesError
     return False
 
+# http://stackoverflow.com/questions/3971822/yaml-syntax-validator
+def isYamlFileValid(filePath):
+  try:
+    yaml.load(open(filePath), Loader = yaml.Loader)
+    return True
+
+  except yaml.parser.ParserError, invalidYamlError:
+    print invalidYamlError
+    return False;
+
 def validateConfigs():
   # The index of the files and if they are valid
   fileValidatesIndex = {}
@@ -60,7 +72,7 @@ def validateConfigs():
       fileValidatesIndex[configFileName] = isJsonFileValid(configFileName)
 
     elif configFileName.endswith(".yml") or configFileName.endswith(".yaml"):
-      fileValidatesIndex[configFileName] = True
+      fileValidatesIndex[configFileName] = isYamlFileValid(configFileName)
 
     else:
       fileValidatesIndex[configFileName] = isPropertiesFileValid(configFileName)
