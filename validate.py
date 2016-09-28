@@ -38,8 +38,7 @@ def isJsonFileValid(filePath):
     return True
 
   except ValueError, invalidJsonError:
-    print invalidJsonError
-    return False
+    return invalidJsonError
 
 # https://bitbucket.org/jnoller/pyjavaproperties
 def isPropertiesFileValid(filePath):
@@ -49,8 +48,7 @@ def isPropertiesFileValid(filePath):
     return True 
 
   except UnboundLocalError, invalidPropertiesError:
-    print invalidPropertiesError
-    return False
+    return invalidPropertiesError
 
 # http://stackoverflow.com/questions/3971822/yaml-syntax-validator
 def isYamlFileValid(filePath):
@@ -59,8 +57,7 @@ def isYamlFileValid(filePath):
     return True
 
   except yaml.parser.ParserError, invalidYamlError:
-    print invalidYamlError
-    return False;
+    return invalidYamlError
 
 def validateConfigs():
   # The index of the files and if they are valid
@@ -85,10 +82,10 @@ print bcolors.BOLD + bcolors.OKBLUE + "#########################################
 
 validationIndex = validateConfigs()
 for filePath, isValid in validationIndex.iteritems():
-  if isValid:
+  if isValid == True:
     # http://www.fileformat.info/info/unicode/char/2714/index.htm
     print bcolors.OKGREEN + str(u'\u2714'.encode('UTF-8')) + " File " + filePath + " is valid!" + bcolors.ENDC
 
   else:
     # http://www.fileformat.info/info/unicode/char/2718/index.htm
-    print bcolors.FAIL + str(u'\u2718'.encode('UTF-8')) + " File " + filePath + " is NOT valid!" + bcolors.ENDC
+    print bcolors.FAIL + str(u'\u2718'.encode('UTF-8')) + " File " + filePath + " is NOT valid: " + str(isValid) + bcolors.ENDC
