@@ -24,7 +24,6 @@ currentDirPath = os.path.dirname(os.path.realpath(__file__))
 if len(sys.argv) > 1:
   if os.path.isdir(sys.argv[1]):
     currentDirPath = sys.argv[1]
-    print bcolors.WARNING + "=> Validating directory " + currentDirPath
 
 # List the config files based on the given extension.
 def listConfigFiles(extension):
@@ -92,9 +91,12 @@ def validateConfigs():
 print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
 print bcolors.BOLD + bcolors.OKBLUE + "###### Intuit Spring Cloud Config Validator ######" + bcolors.ENDC
 print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
+print bcolors.WARNING + "=> Validating directory " + currentDirPath
 
 # Load the validation of the config files
 validationIndex = validateConfigs()
+
+noErrors = True
 
 # Iterate over the index of the verifications
 for filePath, isValid in validationIndex.iteritems():
@@ -107,3 +109,7 @@ for filePath, isValid in validationIndex.iteritems():
     # http://www.fileformat.info/info/unicode/char/2718/index.htm
     x = str(u'\u2718'.encode('UTF-8'))
     print bcolors.FAIL + x + " File " + filePath + " is NOT valid: " + str(isValid) + bcolors.ENDC
+    noErrors = False
+
+# Exist with the value for errors
+sys.exit(0 if noErrors else 1)
