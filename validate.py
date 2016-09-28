@@ -1,5 +1,15 @@
 import os
 import glob
+import json
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
 
 # Current directory path
 currentDirPath = os.path.dirname(os.path.realpath(__file__))
@@ -18,7 +28,6 @@ def listAllConfigFiles():
 
 # http://stackoverflow.com/questions/11294535/verify-if-a-string-is-json-in-python/11294685#11294685
 def isJsonFileValid(filePath):
-  print "Validating " + filePath
   try:
     with open(filePath) as data_file:
       data = json.load(data_file)
@@ -44,14 +53,16 @@ def validateConfigs():
 
   return fileValidatesIndex
 
-print "All configs"
-print listAllConfigFiles()
+print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
+print bcolors.BOLD + bcolors.OKBLUE + "###### Intuit Spring Cloud Config Validator ######" + bcolors.ENDC
+print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
 
 validationIndex = validateConfigs()
 for filePath, isValid in validationIndex.iteritems():
   if isValid:
     # http://www.fileformat.info/info/unicode/char/2714/index.htm
-    print str(u'\u2714'.encode('UTF-8')) + " File " + filePath + " is valid!"
+    print bcolors.OKGREEN + str(u'\u2714'.encode('UTF-8')) + " File " + filePath + " is valid!" + bcolors.ENDC
+
   else:
     # http://www.fileformat.info/info/unicode/char/2718/index.htm
-    print str(u'\u2718'.encode('UTF-8')) + " File " + filePath + " is NOT valid!"
+    print bcolors.FAIL + str(u'\u2718'.encode('UTF-8')) + " File " + filePath + " is NOT valid!" + bcolors.ENDC
