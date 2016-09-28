@@ -1,7 +1,9 @@
 import os
 import glob
 import json
+from pyjavaproperties import Properties
 
+# The background colors used below
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -33,7 +35,19 @@ def isJsonFileValid(filePath):
       data = json.load(data_file)
     return True
 
-  except ValueError, e:
+  except ValueError, invalidJsonError:
+    print invalidJsonError
+    return False
+
+# https://bitbucket.org/jnoller/pyjavaproperties
+def isPropertiesFileValid(filePath):
+  p = Properties()
+  try:
+    p.load(open(filePath))
+    return True 
+
+  except UnboundLocalError, invalidPropertiesError:
+    print invalidPropertiesError
     return False
 
 def validateConfigs():
@@ -49,7 +63,7 @@ def validateConfigs():
       fileValidatesIndex[configFileName] = True
 
     else:
-      fileValidatesIndex[configFileName] = True
+      fileValidatesIndex[configFileName] = isPropertiesFileValid(configFileName)
 
   return fileValidatesIndex
 
