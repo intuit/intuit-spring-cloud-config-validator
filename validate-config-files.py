@@ -11,27 +11,26 @@ from pyjavaproperties import Properties
 
 # The background colors used below
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
+  HEADER = '\033[95m'
+  OKBLUE = '\033[94m'
+  OKGREEN = '\033[92m'
+  WARNING = '\033[93m'
+  FAIL = '\033[91m'
+  ENDC = '\033[0m'
+  BOLD = '\033[1m'
 
 # List the config files based on the given extension.
 def listConfigFiles(dirPath, extension):
   return glob.glob(os.path.join(dirPath, extension))
 
 # Execute any git command in python
-# 
 def git(args):
-    environ = os.environ.copy()
-    proc = subprocess.Popen(args, stdout=subprocess.PIPE, env=environ)
-    return proc.communicate()
+  environ = os.environ.copy()
+  proc = subprocess.Popen(args, stdout=subprocess.PIPE, env=environ)
+  return proc.communicate()
 
 # The set of files changed in the current changes
-def listConfigFilesGithub(base, head):
+def listConfigFilesInGitCommits(base, head):
   # http://stackoverflow.com/questions/1552340/how-to-list-the-file-names-only-that-changed-between-two-commits
   # https://robots.thoughtbot.com/input-output-redirection-in-the-shell
   # git show --pretty="format:" --name-only | cat
@@ -41,7 +40,7 @@ def listConfigFilesGithub(base, head):
   # http://stackoverflow.com/questions/33944647/what-is-the-most-pythonic-way-to-filter-a-set/33944663#33944663
   return [x for x in set(results.strip().split('\n')) if x != '']
 
-def openFileContent(fileName, commit = "HEAD"):
+def openCommitFileContent(fileName, commit = "HEAD"):
   # Show the file at the head
   # git show HEAD:application.properties | cat
   (results, code) = git(('git', 'show', commit + ":" + fileName))
@@ -61,7 +60,7 @@ def createContextDir(context):
   return dirPath
 
 # Saves the given content in the file path from the contextDir
-def saveFileContent(fileName, content, contextDir):
+def saveCommitFileContent(fileName, content, contextDir):
   filePath = contextDir + "/" + fileName
 
   # Save the file in the context
@@ -70,26 +69,35 @@ def saveFileContent(fileName, content, contextDir):
 
   return filePath
 
-def processPrehookFiles():
+# Fetches the names of all files changed in the current hook and
+# process them all.
+def processPrehookFilesInGithub():
   # Create a context Id for the process
   context = str(uuid.uuid4())
 
   # Create the context directory to save the current state of the files
   contextDir = createContextDir(context)
 
+  # The environments provided by the Github PR environment
+  # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#environment-variables
+  base = os.environ.get('GITHUB_PULL_REQUEST_BASE')
+  base = base if base else "HEAD^"
+
+  head = os.environ.get('GITHUB_PULL_REQUEST_HEAD')
+  head = head if head else "HEAD"
+
   # List all the files that changed in the base and head
-  files = listConfigFilesGithub("HEAD^", "HEAD")
+  files = listConfigFilesInGitCommits(base, head)
 
   # Process and validate each individual file
-
   print "Processing context " + context
   for fileName in files:
     # Open the contents 
-    content = openFileContent(fileName)
+    content = openCommitFileContent(fileName)
     # print content
 
     # Save the contents in the context directory
-    filePath = saveFileContent(fileName, content, contextDir)
+    filePath = saveCommitFileContent(fileName, content, contextDir)
     # print "File saved at " + filePath
 
   return contextDir
@@ -164,7 +172,7 @@ if len(sys.argv) > 1:
 
 # If we are processing the webhook in Github Enterprise
 if onGithub:
-  currentDirPath = processPrehookFiles()
+  currentDirPath = processPrehookFilesInGithub()
 
 # Starting the process
 print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
