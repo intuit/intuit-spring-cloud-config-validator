@@ -2,6 +2,8 @@
 
 Python script that validates Spring Cloud Config configuration repos by analyzing `.json`, `.yaml`, `.yml` and `.properties`.
 
+![Validation with errors](https://jira.intuit.com/secure/attachment/643347/643347_execute-from-curl.png)
+
 # Usage
 
 * **Current Directory Validation**: Download and execute for a given directory using `curl`.
