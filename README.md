@@ -38,6 +38,8 @@ You can follow the steps at https://help.github.com/enterprise/2.6/admin/guides/
 
 ## Github Pre-receive failure
 
+The execution of a pre-receive hook in Github prevents users from pushing code with errors. The validate script developed here can prevent users from publishing changes in Spring Cloud Config repos that can break the server. The example below shows the validation. 
+
 * Github Change on a local workspace
 
 ![git change](https://jira.intuit.com/secure/attachment/643248/git-show-commit.png)
