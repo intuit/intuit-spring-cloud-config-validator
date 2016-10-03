@@ -30,11 +30,15 @@ def git(args):
   return proc.communicate()
 
 # The set of files changed in the current changes
-def listConfigFilesInGitCommits(base, head):
+def listConfigFilesInGitCommits(base, commit):
   # http://stackoverflow.com/questions/1552340/how-to-list-the-file-names-only-that-changed-between-two-commits
   # https://robots.thoughtbot.com/input-output-redirection-in-the-shell
   # git show --pretty="format:" --name-only | cat
-  (results, code) = git(('git', 'show', base + ".." + head, '--pretty=format:', '--name-only'))
+  if "0000000000" not in base:
+    (results, code) = git(('git', 'show', base + ".." + commit, '--pretty=format:', '--name-only'))
+
+  else:
+    (results, code) = git(('git', 'show', commit, '--pretty=format:', '--name-only'))
 
   # Filter the non-empty, non-repeated elements as the command returns a\nb\n\c
   # http://stackoverflow.com/questions/33944647/what-is-the-most-pythonic-way-to-filter-a-set/33944663#33944663
@@ -71,7 +75,7 @@ def saveCommitFileContent(fileName, content, contextDir):
 
 # Fetches the names of all files changed in the current hook and
 # process them all.
-def processPrehookFilesInGithub():
+def processPrehookFilesInGithub(base, head):
   # Create a context Id for the process
   context = str(uuid.uuid4())
 
@@ -80,20 +84,14 @@ def processPrehookFilesInGithub():
 
   # The environments provided by the Github PR environment
   # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#environment-variables
-  base = os.environ.get('GITHUB_PULL_REQUEST_BASE')
-  base = base if base else "HEAD^"
-
-  head = os.environ.get('GITHUB_PULL_REQUEST_HEAD')
-  head = head if head else "HEAD"
-
   # List all the files that changed in the base and head
   files = listConfigFilesInGitCommits(base, head)
 
   # Process and validate each individual file
-  print "Processing context " + context
+  # print "Processing context " + context
   for fileName in files:
     # Open the contents 
-    content = openCommitFileContent(fileName)
+    content = openCommitFileContent(fileName, head)
     # print content
 
     # Save the contents in the context directory
@@ -170,15 +168,36 @@ if len(sys.argv) > 1:
   if os.path.isdir(sys.argv[1]):
     currentDirPath = sys.argv[1]
 
-# If we are processing the webhook in Github Enterprise
-if onGithub:
-  currentDirPath = processPrehookFilesInGithub()
-
+# When in github, those will be available
+#base = os.environ.get('GITHUB_PULL_REQUEST_BASE')
+#head = os.environ.get('GITHUB_PULL_REQUEST_HEAD')
+ 
 # Starting the process
 print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
 print bcolors.BOLD + bcolors.OKBLUE + "###### Intuit Spring Cloud Config Validator ######" + bcolors.ENDC
 print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
-print bcolors.WARNING + "=> Validating directory " + currentDirPath
+
+if onGithub:
+  # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#writing-a-pre-receive-hook-script
+  # It takes no arguments, but for each ref to be updated it receives on standard input a line of the format:
+  #      <old-value> SP <new-value> SP <ref-name> LF
+  # where 
+  # * <old-value> is the old object name stored in the ref,
+  # * <new-value> is the new object name to be stored in the ref,
+  # * <ref-name> is the full name of the ref. 
+  # When creating a new ref, < old-value > is 40 00000000000000000.
+  line = sys.stdin.read()
+  (base, commit, ref) = line.strip().split()
+  print "Processing base=" + base + " commit=" + commit + " ref=" + ref
+
+  currentDirPath = processPrehookFilesInGithub(base, commit)
+  if "0000000" not in base:
+    print bcolors.WARNING + "=> Validating " + base + ".." + commit
+  else:
+    print bcolors.WARNING + "=> Validating SHA " + commit
+
+else:
+  print bcolors.WARNING + "=> Validating directory " + currentDirPath
 
 # Load the validation of the config files
 validationIndex = validateConfigs(currentDirPath)
