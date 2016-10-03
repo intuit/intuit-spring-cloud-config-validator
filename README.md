@@ -1,18 +1,50 @@
 # spring-cloud-config-properties-verification
 
-Verification of Spring Cloud Config configuration repos by analyzing `.json`, `.yaml`, `.yml` and `.properties`.
+Python script that validates Spring Cloud Config configuration repos by analyzing `.json`, `.yaml`, `.yml` and `.properties`.
 
 # Usage
 
-Download the script `validate-config-files.py` and execute it. The script returns 0 for success or 1 for errors.
+* **Current Directory Validation**: Download and execute for a given directory using `curl`.
+* **Multiple Directory Validation**: Download the script `validate-config-files.py` and execute it for a given directory path.
+* **Exit Values**: The script returns `0 for success` or `1 for errors`.
+* **Report**: Gives hints about the errors
 
 ## Execute current Directory
 
+You can execute the script directly in the current directory by using your LDAP credentials to the script.
+
+> $ curl --user "mdesales:******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-properties-verification/master/validate-config-files.py | python
+
+* Change `--user "mdesales:*****"` with your `LDAP` credentials. 
+
 ```
-$ validate-config-files.py
+$ pwd
+/home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification
+
+$ curl --user "mdesales:******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-properties-verification/master/validate-config-files.py | python
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  7946  100  7946    0     0  23442      0 --:--:-- --:--:-- --:--:-- 23439
+##################################################
+###### Intuit Spring Cloud Config Validator ######
+##################################################
+=> Validating directory /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification
+✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-ios_8.0.yml is NOT valid: expected '<document start>', but found '<scalar>'
+  in "/home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-ios_8.0.yml", line 1, column 5
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-ios.yml is valid!
+✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/.matrix-android.json is NOT valid: No JSON object could be decoded
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-android_N.yml is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-2.7.yml is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/.matrix-ios.json is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-android.yml is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-android_6.0.yml is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu.yaml is valid!
+✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/application.properties is NOT valid: local variable 'wspacere' referenced before assignment
 ```
 
 ## Execute for another Directory
+
+You need to download the script and execute it, passing the parameter.
 
 ```
 $ validate-config-files.py /another/springcloud/config/directory
