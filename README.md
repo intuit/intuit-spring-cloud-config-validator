@@ -12,10 +12,29 @@ Python script that validates Spring Cloud Config configuration repos by analyzin
 * Install Python 2.6+
 * Install Pip https://pip.pypa.io/en/stable/installing/
 
+```
+$ curl --silent --show-error --retry 5 https://bootstrap.pypa.io/get-pip.py | sudo python
+```
+
+Make sure you have the required versions:
+
+```
+$ python --version
+Python 2.7.10
+
+$ pip --version
+pip 7.0.3 from /usr/local/lib/python2.7/dist-packages (python 2.7)
+```
+
+## Script Dependencies
+
 You MUST install the required dependencies if you are running the script locally:
 
 ```
-$ sudo pip install -r requirements.txt
+$ $ curl --user "mdesales:uTN@9oad" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-properties-verification/master/requirements.txt > requirements.txt && pip install -r requirements.txt
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    24  100    24    0     0     56      0 --:--:-- --:--:-- --:--:--    56
 You are using pip version 7.0.3, however version 8.1.2 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 Requirement already satisfied (use --upgrade to upgrade): pyyaml in /usr/local/lib/python2.7/dist-packages (from -r requirements.txt (line 1))
