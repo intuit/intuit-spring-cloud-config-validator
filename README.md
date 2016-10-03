@@ -31,7 +31,7 @@ pip 7.0.3 from /usr/local/lib/python2.7/dist-packages (python 2.7)
 You MUST install the required dependencies if you are running the script locally:
 
 ```
-$ $ curl --user "mdesales:*******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-properties-verification/master/requirements.txt > requirements.txt && pip install -r requirements.txt
+$ curl --user "mdesales:*******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-properties-verification/master/requirements.txt > requirements.txt && pip install -r requirements.txt
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100    24  100    24    0     0     56      0 --:--:-- --:--:-- --:--:--    56
@@ -40,6 +40,8 @@ You should consider upgrading via the 'pip install --upgrade pip' command.
 Requirement already satisfied (use --upgrade to upgrade): pyyaml in /usr/local/lib/python2.7/dist-packages (from -r requirements.txt (line 1))
 Requirement already satisfied (use --upgrade to upgrade): pyjavaproperties in /usr/local/lib/python2.7/dist-packages (from -r requirements.txt (line 2))
 ```
+
+At this point, you are ready to execute the script manually.
 
 # Usage
 
