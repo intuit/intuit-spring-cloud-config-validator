@@ -7,6 +7,21 @@ Python script that validates Spring Cloud Config configuration repos by analyzin
 
 ![Validation with errors](https://jira.intuit.com/secure/attachment/643347/643347_execute-from-curl.png)
 
+# Requirements
+
+* Install Python 2.6+
+* Install Pip https://pip.pypa.io/en/stable/installing/
+
+You MUST install the required dependencies if you are running the script locally:
+
+```
+$ sudo pip install -r requirements.txt
+You are using pip version 7.0.3, however version 8.1.2 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+Requirement already satisfied (use --upgrade to upgrade): pyyaml in /usr/local/lib/python2.7/dist-packages (from -r requirements.txt (line 1))
+Requirement already satisfied (use --upgrade to upgrade): pyjavaproperties in /usr/local/lib/python2.7/dist-packages (from -r requirements.txt (line 2))
+```
+
 # Usage
 
 * **Current Directory Validation**: Download and execute for a given directory using `curl`.
