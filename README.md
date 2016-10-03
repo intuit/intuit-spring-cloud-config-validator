@@ -2,6 +2,9 @@
 
 Python script that validates Spring Cloud Config configuration repos by analyzing `.json`, `.yaml`, `.yml` and `.properties`.
 
+* Manual Validations
+* Github Pre-receive Hook Status Validations: Commits and Pull Requests  
+
 ![Validation with errors](https://jira.intuit.com/secure/attachment/643347/643347_execute-from-curl.png)
 
 # Usage
