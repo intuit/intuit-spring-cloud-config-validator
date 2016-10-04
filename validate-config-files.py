@@ -118,8 +118,8 @@ def isJsonFileValid(filePath):
       data = json.load(data_file)
     return True
 
-  except ValueError, invalidJsonError:
-    return invalidJsonError
+  except:
+    return sys.exc_info()[1]
 
 # https://bitbucket.org/jnoller/pyjavaproperties
 def isPropertiesFileValid(filePath):
@@ -128,8 +128,8 @@ def isPropertiesFileValid(filePath):
     p.load(open(filePath))
     return True 
 
-  except UnboundLocalError, invalidPropertiesError:
-    return invalidPropertiesError
+  except:
+    return sys.exc_info()[1]
 
 # http://stackoverflow.com/questions/3971822/yaml-syntax-validator
 def isYamlFileValid(filePath):
@@ -138,6 +138,7 @@ def isYamlFileValid(filePath):
     return True
 
   except yaml.composer.ComposerError, multipleDocsError:
+    # When multiple documents exist in the file, try loading them all
     yaml.load_all(open(filePath), Loader = yaml.Loader)
     return True
 
