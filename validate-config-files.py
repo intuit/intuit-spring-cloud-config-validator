@@ -137,8 +137,12 @@ def isYamlFileValid(filePath):
     yaml.load(open(filePath), Loader = yaml.Loader)
     return True
 
-  except yaml.parser.ParserError, invalidYamlError:
-    return invalidYamlError
+  except yaml.composer.ComposerError, multipleDocsError:
+    yaml.load_all(open(filePath), Loader = yaml.Loader)
+    return True
+
+  except:
+    return sys.exc_info()[1]
 
 # Generates an index of the config files and the associated exception, if any
 def validateConfigs(dirPath):
