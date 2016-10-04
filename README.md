@@ -11,6 +11,7 @@ Python script that validates Spring Cloud Config configuration repos by analyzin
 
 * Install Python 2.6+
 * Install Pip https://pip.pypa.io/en/stable/installing/
+ * Mac `sudo easy_install pip` 
 
 ```
 $ curl --silent --show-error --retry 5 https://bootstrap.pypa.io/get-pip.py | sudo python
@@ -31,14 +32,14 @@ pip 7.0.3 from /usr/local/lib/python2.7/dist-packages (python 2.7)
 You MUST install the required dependencies if you are running the script locally:
 
 ```
-$ curl --user "mdesales:*******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-properties-verification/master/requirements.txt > requirements.txt && pip install -r requirements.txt
+$ curl --user "mdesales:******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-validator/master/requirements.txt > requirements.txt && pip install --user -r requirements.txt
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100    24  100    24    0     0     56      0 --:--:-- --:--:-- --:--:--    56
-You are using pip version 7.0.3, however version 8.1.2 is available.
-You should consider upgrading via the 'pip install --upgrade pip' command.
-Requirement already satisfied (use --upgrade to upgrade): pyyaml in /usr/local/lib/python2.7/dist-packages (from -r requirements.txt (line 1))
-Requirement already satisfied (use --upgrade to upgrade): pyjavaproperties in /usr/local/lib/python2.7/dist-packages (from -r requirements.txt (line 2))
+100    24  100    24    0     0     30      0 --:--:-- --:--:-- --:--:--    30
+Collecting pyyaml (from -r requirements.txt (line 1))
+Collecting pyjavaproperties (from -r requirements.txt (line 2))
+Installing collected packages: pyyaml, pyjavaproperties
+Successfully installed pyjavaproperties pyyaml
 ```
 
 At this point, you are ready to execute the script manually.
@@ -62,7 +63,8 @@ You can execute the script directly in the current directory by using your LDAP 
 $ pwd
 /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification
 
-$ curl --user "mdesales:******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-properties-verification/master/validate-config-files.py | python
+$ curl --user "mdesales:******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config\
+                                              -properties-verification/master/validate-config-files.py | python
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  7946  100  7946    0     0  23442      0 --:--:-- --:--:-- --:--:-- 23439
