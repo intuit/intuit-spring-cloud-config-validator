@@ -1,4 +1,4 @@
-# spring-cloud-config-properties-verification
+# spring-cloud-config-validator
 
 Python script that validates Spring Cloud Config configuration repos by analyzing `.json`, `.yaml`, `.yml` and `.properties`.
 
