@@ -1,8 +1,17 @@
 # -*- coding: utf-8 -*-
-import trace, sys
-from .context import *
+
+# Make sure to append one of the sys paths the current one
+# So that we can append context. Evaluated when running the discover mode as 
+# "python -m unittest discover -v tests"
+# http://stackoverflow.com/questions/11536764/how-to-fix-attempted-relative-import-in-non-package-even-with-init-py/19190695#19190695
+if __name__ == '__main__' and __package__ is None:
+  import sys
+  sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
+from context import *
 import unittest
 
+# Test fixture directory containing config files
 FIXTURE_DIR = FIXTURES_DIR_PATH + "/invalid-matrix-json-column"
 
 class InvalidMatrixFileTests(unittest.TestCase, ValidationAssertions):
@@ -35,9 +44,3 @@ class InvalidMatrixFileTests(unittest.TestCase, ValidationAssertions):
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(InvalidMatrixFileTests)
   unittest.TextTestRunner(verbosity=2).run(suite)
-
-  #t = trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], count=1, trace=0)
-  #t.runfunc(unittest.main)
-  #r = t.results()
-  #r.write_results(show_missing=True)
-  #unittest.main()

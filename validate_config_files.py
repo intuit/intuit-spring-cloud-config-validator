@@ -10,7 +10,7 @@ import uuid
 from pyjavaproperties import Properties
 
 # Verion of this script, printed in the output
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 # The background colors used below
 class ShellColor:
@@ -33,7 +33,12 @@ class ExecutionContext:
 
   @staticmethod
   def isOnTestCases():
-    return 'tests' in sys.modules.keys()
+    """Verifies if the unit tests have been loaded for execution using python or the 'discover' feature (python 2.7+).
+        * python -m tests.test_invalid_matrix_json_validation
+        * python -m unittest discover -v tests
+    """
+    # http://stackoverflow.com/questions/4858100/how-to-list-imported-modules/4858123#4858123
+    return 'unittest' in sys.modules.keys() or 'tests.sys' in sys.modules.keys()
 
   @staticmethod
   def getCurrentDirPath():
