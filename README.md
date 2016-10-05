@@ -120,3 +120,99 @@ The execution of a pre-receive hook in Github prevents users from pushing code w
 * Git push fails when errors are in the files
 
 ![Github Pre-receive Failure](https://jira.intuit.com/secure/attachment/643249/pre-receive-hook-docker.png)
+
+# Development
+
+Everything you need to develop. Here are some requirements and utilities.
+
+* Python 2.7+: We can use the discover mode for all tests on this version
+ * https://docs.python.org/2/library/unittest.html#test-discovery
+
+
+## Running all test cases suite
+
+Make sure to run all the test cases after making changes to the script.
+
+```
+$ python -m unittest discover -v tests
+test_all_matrix_json_files_are_invalid (test_invalid_matrix_json_validation.InvalidMatrixFileTests) ... The android matrix file is invalid
+is tests/fixtures/invalid-matrix-json-column/ttu-android.yml valid? True
+is tests/fixtures/invalid-matrix-json-column/.matrix-android.json valid? False ERROR: Extra data: line 2 column 11 - line 29 column 1 (char 11 - 394)
+is tests/fixtures/invalid-matrix-json-column/ttu.yaml valid? True
+is tests/fixtures/invalid-matrix-json-column/application.properties valid? True
+is tests/fixtures/invalid-matrix-json-column/.matrix-ios.json valid? True
+is tests/fixtures/invalid-matrix-json-column/ttu-ios.yml valid? True
+ok
+test_that_validation_index_is_dictionary (test_invalid_matrix_json_validation.InvalidMatrixFileTests) ... ok
+test_all_properties_are_valid (test_all_valid_config_validation.AllSuccessfulTests) ... All config files are valid
+is tests/fixtures/all-valid-config/.matrix.json valid? True
+is tests/fixtures/all-valid-config/publisher-e2e.yml valid? True
+is tests/fixtures/all-valid-config/publisher-onboard_prod.yml valid? True
+is tests/fixtures/all-valid-config/publisher-prf.yml valid? True
+is tests/fixtures/all-valid-config/publisher-qal.yml valid? True
+is tests/fixtures/all-valid-config/publisher.properties valid? True
+is tests/fixtures/all-valid-config/publisher-prd.yml valid? True
+is tests/fixtures/all-valid-config/publisher-onboard_preprod.yml valid? True
+is tests/fixtures/all-valid-config/publisher-dev.yml valid? True
+ok
+test_that_validation_index_is_dictionary (test_all_valid_config_validation.AllSuccessfulTests) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.049s
+
+OK
+```
+
+## Running individual test cases
+
+Just use python with the `-m` switch to indicate the test module to be executed.
+
+```
+$ python -m tests.test_invalid_matrix_json_validation
+test_all_matrix_json_files_are_invalid (__main__.InvalidMatrixFileTests) ... The android matrix file is invalid
+is tests/fixtures/invalid-matrix-json-column/ttu-android.yml valid? True
+is tests/fixtures/invalid-matrix-json-column/.matrix-android.json valid? False ERROR: Extra data: line 2 column 11 - line 29 column 1 (char 11 - 394)
+is tests/fixtures/invalid-matrix-json-column/ttu.yaml valid? True
+is tests/fixtures/invalid-matrix-json-column/application.properties valid? True
+is tests/fixtures/invalid-matrix-json-column/.matrix-ios.json valid? True
+is tests/fixtures/invalid-matrix-json-column/ttu-ios.yml valid? True
+ok
+test_that_validation_index_is_dictionary (__main__.InvalidMatrixFileTests) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.026s
+
+OK
+```
+
+## Validating Pull Request execution.
+
+Just update the data docker container with the new value.
+
+```
+~/dev/github/intuit/servicesplatform-tools/spring-cloud-config-validator on  feature/make-validator-oop! ⌚ 14:25:46
+$ docker cp validate_config_files.py data:/home/git/test.git/hooks/pre-receive
+```
+
+Then, execute the command to push new commits to the test origin server.
+
+```
+~/dev/github/intuit/servicesplatform-tools/spring-cloud-config-validator/ttu-config on  master ⌚ 14:25:55
+$ GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 52311 -i ../id_rsa" git push -u test master
+Warning: Permanently added '[192.168.154.132]:52311' (ECDSA) to the list of known hosts.
+Counting objects: 214, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (100/100), done.
+Writing objects: 100% (214/214), 21.50 KiB | 0 bytes/s, done.
+Total 214 (delta 127), reused 184 (delta 109)
+remote: ##################################################
+remote: ###### Spring Cloud Config Validator 0.1.3 #######
+remote: ##################################################
+remote: Processing base=0000000000000000000000000000000000000000 commit=6ff408ac89564c994925c46847d775fff940caa3 ref=refs/heads/master
+remote: => Validating SHA 6ff408ac89564c994925c46847d775fff940caa3
+remote: ✘ File .matrix-android.json is NOT valid: Extra data: line 2 column 11 - line 29 column 1 (char 11 - 394)
+remote: ✔ File .matrix-ios.json is valid!
+To git@192.168.154.132:test.git
+ ! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to 'git@192.168.154.132:test.git'
+```
