@@ -1,0 +1,28 @@
+
+	"appName": "ttu",
+	"rootProfile": "android",
+	"outputTypes": ["json", "properties"],
+	"profilesSequence": [
+		"appVersion",
+		"osVersion"
+	],
+	"profiles": [{
+		"id": "appVersion",
+		"descriptions": [
+			"2.8",
+			"2.9",
+			"2.10",
+			"2.11",
+			"2.12",
+			"3.0"
+		]
+	}, {
+		"id": "osVersion",
+		"descriptions": [
+			"android_4.0",
+			"android_5.0",
+			"android_6.0",
+			"android_N"
+		]
+	}]
+}

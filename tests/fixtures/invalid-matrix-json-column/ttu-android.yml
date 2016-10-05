@@ -1,0 +1,38 @@
+minAppVersion: "2120"
+screenidsForMojo: 
+  - "hardstop"
+  - "S1040PERcfdi8674"
+  - "S1040PERbfdi10104739"
+  - "S1040PERcfdi856824732"
+  - "S2015ZCAbcai5676"
+  - "S2015OHIbohi146"
+OCRActive: true
+buttonExposure: "min"
+webFailover: false
+TTOSessionPreload: true
+watchEnabled: false
+fuegoWebFallback: true
+myTTEasyExtension: true
+gtkmEnabled: true
+genericConfigSet: 
+  WelcomeExperienceType: "native"
+OCRConfigSet: 
+  ocrFlashOn: true
+  disabledOCRDevices: []
+  disabledOSVersion: []
+fuegoConfigSet: 
+  nativeTopics: 
+    - "autoregistrationfees"
+  nativeDisabledDevices: []
+  nativeDisabledOSVersions: []
+disabledAutopredictionWebviewSet: 
+  disabledAutoPredictionModels:
+    - "Samsung"
+  disabledAutoPredictionFieldIds:
+    - "returnsIRS1040ReturnReturnDataPPPersonTaxpayerFilerInfoPPSSNPP"
+    - "returnsIRS1040ReturnReturnDataPPPersonTaxpayerFilerInfoPPDateOfBirthPP"
+liveHelpConfigSet: 
+  piiMaskingEnabled: true
+temp1: true
+appshellEnabled: false
+appIndexing: true
