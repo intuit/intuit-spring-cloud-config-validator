@@ -10,10 +10,10 @@ import uuid
 from pyjavaproperties import Properties
 
 # Verion of this script, printed in the output
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 # The background colors used below
-class bcolors:
+class ShellColor:
   HEADER = '\033[95m'
   OKBLUE = '\033[94m'
   OKGREEN = '\033[92m'
@@ -51,7 +51,7 @@ class ExecutionContext:
 
     # If the execution is on github
     if not ExecutionContext.isOnGithub():
-      print bcolors.WARNING + "=> Validating directory " + currentDirPath
+      print ShellColor.WARNING + "=> Validating directory " + currentDirPath
 
     else:
       # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#writing-a-pre-receive-hook-script
@@ -68,10 +68,10 @@ class ExecutionContext:
 
       currentDirPath = Validator.processPrehookFilesInGithub(base, commit)
       if "0000000" not in base:
-        print bcolors.WARNING + "=> Validating " + base + ".." + commit
+        print ShellColor.WARNING + "=> Validating " + base + ".." + commit
 
       else:
-        print bcolors.WARNING + "=> Validating SHA " + commit
+        print ShellColor.WARNING + "=> Validating SHA " + commit
 
     return currentDirPath
 
@@ -239,20 +239,22 @@ class Validator:
 #base = os.environ.get('GITHUB_PULL_REQUEST_BASE')
 #head = os.environ.get('GITHUB_PULL_REQUEST_HEAD')
 
-class Execution:
+class ShellExecution:
 
   @staticmethod
-  def execute(dirPath = None):
+  def run(dirPath = None):
     # Starting the process
-    print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
-    print bcolors.BOLD + bcolors.OKBLUE + "###### Spring Cloud Config Validator " + VERSION + " #######" + bcolors.ENDC
-    print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
+    print ShellColor.BOLD + ShellColor.OKBLUE + "##################################################" + ShellColor.ENDC
+    print ShellColor.BOLD + ShellColor.OKBLUE + "###### Spring Cloud Config Validator " + VERSION + " #######" + ShellColor.ENDC
+    print ShellColor.BOLD + ShellColor.OKBLUE + "##################################################" + ShellColor.ENDC
 
     currentDirPath = dirPath if dirPath else ExecutionContext.getCurrentDirPath()
 
     # Load the validation of the config files
-    validationIndex = Validator.validateConfigs(currentDirPath)
+    return (currentDirPath, Validator.validateConfigs(currentDirPath))
 
+  @staticmethod
+  def explain(currentDirPath, validationIndex):
     noErrors = True
 
     # Iterate over the index of the verifications
@@ -261,21 +263,20 @@ class Execution:
       if isValid == True:
         # http://www.fileformat.info/info/unicode/char/2714/index.htm
         v = str(u'\u2714'.encode('UTF-8'))
-        print bcolors.OKGREEN + v + " File " + filePath + " is valid!" + bcolors.ENDC
+        print ShellColor.OKGREEN + v + " File " + filePath + " is valid!" + ShellColor.ENDC
 
       else:
         isValid = isValid if not ExecutionContext.isOnGithub() else str.replace(str(isValid), currentDirPath + "/", "")
         # Only when we are running in github
         # http://www.fileformat.info/info/unicode/char/2718/index.htm
         x = str(u'\u2718'.encode('UTF-8'))
-        print bcolors.FAIL + x + " File " + filePath + " is NOT valid: " + str(isValid) + bcolors.ENDC
+        print ShellColor.FAIL + x + " File " + filePath + " is NOT valid: " + str(isValid) + ShellColor.ENDC
         noErrors = False
 
     # Exist with the value for errors
     sys.exit(0 if noErrors else 1)
 
-if ExecutionContext.isOnTestCases():
-  print "Executing test cases..."
-
-else:
-  Execution.execute()
+# Execute the shell script and explain the validation.
+if not ExecutionContext.isOnTestCases():
+  (currentDirPath, validationIndex) = ShellExecution.run()
+  ShellExecution.explain(currentDirPath, validationIndex)
