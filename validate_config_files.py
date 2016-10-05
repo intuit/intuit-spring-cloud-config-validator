@@ -278,5 +278,5 @@ class ShellExecution:
 
 # Execute the shell script and explain the validation.
 if not ExecutionContext.isOnTestCases():
-  (currentDirPath, validationIndex) = ShellExecution.run()
-  ShellExecution.explain(currentDirPath, validationIndex)
+  (executationDirPath, validationIndex) = ShellExecution.run()
+  ShellExecution.explain(executationDirPath, validationIndex)
