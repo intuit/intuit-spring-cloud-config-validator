@@ -119,34 +119,45 @@ class ConfigFileValidator:
   # http://stackoverflow.com/questions/11294535/verify-if-a-string-is-json-in-python/11294685#11294685
   @staticmethod
   def isJsonFileValid(filePath):
+    """Verifies if a given json file is valid"""
+
     try:
       with open(filePath) as data_file:
         data = json.load(data_file)
       return True
 
-    except ValueError, invalidJsonError:
-      return invalidJsonError
+    except:
+      return sys.exc_info()[1]
 
   # https://bitbucket.org/jnoller/pyjavaproperties
   @staticmethod
   def isPropertiesFileValid(filePath):
+    """Verifies if a given properties file is valid"""
+
     p = Properties()
     try:
       p.load(open(filePath))
       return True 
 
-    except UnboundLocalError, invalidPropertiesError:
-      return invalidPropertiesError
+    except:
+      return sys.exc_info()[1]
 
   # http://stackoverflow.com/questions/3971822/yaml-syntax-validator
   @staticmethod
   def isYamlFileValid(filePath):
+    """Verifies if a given yaml file is valid"""
+
     try:
       yaml.load(open(filePath), Loader = yaml.Loader)
       return True
 
-    except yaml.parser.ParserError, invalidYamlError:
-      return invalidYamlError
+    except yaml.composer.ComposerError, multipleDocsError:
+      # When multiple documents exist in the file, try loading them all
+      yaml.load_all(open(filePath), Loader = yaml.Loader)
+      return True
+
+    except:
+      return sys.exc_info()[1]
 
 class Validator:
   """All operations related to the file-system"""
