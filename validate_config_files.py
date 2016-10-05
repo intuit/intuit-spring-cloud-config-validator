@@ -9,7 +9,8 @@ import yaml
 import uuid
 from pyjavaproperties import Properties
 
-VERSION = "0.1.0"
+# Verion of this script, printed in the output
+VERSION = "0.1.1"
 
 # The background colors used below
 class bcolors:
@@ -20,6 +21,59 @@ class bcolors:
   FAIL = '\033[91m'
   ENDC = '\033[0m'
   BOLD = '\033[1m'
+
+class ExecutionContext:
+  """Decider of what to execute"""
+
+  @staticmethod
+  def isOnGithub():
+    """Returns whether the current execution is on github
+       based on the environment variable $GIT_DIR."""
+    return os.environ.get('GIT_DIR')
+
+  @staticmethod
+  def isOnTestCases():
+    return 'tests' in sys.modules.keys()
+
+  @staticmethod
+  def getCurrentDirPath():
+    # http://stackoverflow.com/questions/34598626/how-do-i-check-if-code-is-being-run-from-a-nose-test/34598987#34598987
+    if ExecutionContext.isOnTestCases():
+      return os.path.dirname(os.path.realpath(__file__)) + "/tests"
+
+    # Current directory path where this is executing
+    currentDirPath = os.path.dirname(os.path.realpath(__file__))
+
+    # The user can pass the dir as a parameter
+    if len(sys.argv) > 1:
+      if os.path.isdir(sys.argv[1]):
+        currentDirPath = sys.argv[1]
+
+    # If the execution is on github
+    if not ExecutionContext.isOnGithub():
+      print bcolors.WARNING + "=> Validating directory " + currentDirPath
+
+    else:
+      # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#writing-a-pre-receive-hook-script
+      # It takes no arguments, but for each ref to be updated it receives on standard input a line of the format:
+      #      <old-value> SP <new-value> SP <ref-name> LF
+      # where 
+      # * <old-value> is the old object name stored in the ref,
+      # * <new-value> is the new object name to be stored in the ref,
+      # * <ref-name> is the full name of the ref. 
+      # When creating a new ref, < old-value > is 40 00000000000000000.
+      line = sys.stdin.read()
+      (base, commit, ref) = line.strip().split()
+      print "Processing base=" + base + " commit=" + commit + " ref=" + ref
+
+      currentDirPath = Validator.processPrehookFilesInGithub(base, commit)
+      if "0000000" not in base:
+        print bcolors.WARNING + "=> Validating " + base + ".." + commit
+
+      else:
+        print bcolors.WARNING + "=> Validating SHA " + commit
+
+    return currentDirPath
 
 class GitRepo:
   """Wrapper for Github Repo-related methods"""
@@ -181,67 +235,47 @@ class Validator:
 
     return fileValidatesIndex
 
-# Current directory path where this is executing
-currentDirPath = os.path.dirname(os.path.realpath(__file__))
-
-onGithub = os.environ.get('GIT_DIR')
-
-# The user can pass the dir as a parameter
-if len(sys.argv) > 1:
-  if os.path.isdir(sys.argv[1]):
-    currentDirPath = sys.argv[1]
-
 # When in github, those will be available
 #base = os.environ.get('GITHUB_PULL_REQUEST_BASE')
 #head = os.environ.get('GITHUB_PULL_REQUEST_HEAD')
- 
-# Starting the process
-print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
-print bcolors.BOLD + bcolors.OKBLUE + "###### Spring Cloud Config Validator " + VERSION + " #######" + bcolors.ENDC
-print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
 
-if onGithub:
-  # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#writing-a-pre-receive-hook-script
-  # It takes no arguments, but for each ref to be updated it receives on standard input a line of the format:
-  #      <old-value> SP <new-value> SP <ref-name> LF
-  # where 
-  # * <old-value> is the old object name stored in the ref,
-  # * <new-value> is the new object name to be stored in the ref,
-  # * <ref-name> is the full name of the ref. 
-  # When creating a new ref, < old-value > is 40 00000000000000000.
-  line = sys.stdin.read()
-  (base, commit, ref) = line.strip().split()
-  print "Processing base=" + base + " commit=" + commit + " ref=" + ref
+class Execution:
 
-  currentDirPath = Validator.processPrehookFilesInGithub(base, commit)
-  if "0000000" not in base:
-    print bcolors.WARNING + "=> Validating " + base + ".." + commit
-  else:
-    print bcolors.WARNING + "=> Validating SHA " + commit
+  @staticmethod
+  def execute(dirPath = None):
+    # Starting the process
+    print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
+    print bcolors.BOLD + bcolors.OKBLUE + "###### Spring Cloud Config Validator " + VERSION + " #######" + bcolors.ENDC
+    print bcolors.BOLD + bcolors.OKBLUE + "##################################################" + bcolors.ENDC
+
+    currentDirPath = dirPath if dirPath else ExecutionContext.getCurrentDirPath()
+
+    # Load the validation of the config files
+    validationIndex = Validator.validateConfigs(currentDirPath)
+
+    noErrors = True
+
+    # Iterate over the index of the verifications
+    for filePath, isValid in validationIndex.iteritems():
+      filePath = filePath if not ExecutionContext.isOnGithub() else str.replace(filePath, currentDirPath + "/", "")
+      if isValid == True:
+        # http://www.fileformat.info/info/unicode/char/2714/index.htm
+        v = str(u'\u2714'.encode('UTF-8'))
+        print bcolors.OKGREEN + v + " File " + filePath + " is valid!" + bcolors.ENDC
+
+      else:
+        isValid = isValid if not ExecutionContext.isOnGithub() else str.replace(str(isValid), currentDirPath + "/", "")
+        # Only when we are running in github
+        # http://www.fileformat.info/info/unicode/char/2718/index.htm
+        x = str(u'\u2718'.encode('UTF-8'))
+        print bcolors.FAIL + x + " File " + filePath + " is NOT valid: " + str(isValid) + bcolors.ENDC
+        noErrors = False
+
+    # Exist with the value for errors
+    sys.exit(0 if noErrors else 1)
+
+if ExecutionContext.isOnTestCases():
+  print "Executing test cases..."
 
 else:
-  print bcolors.WARNING + "=> Validating directory " + currentDirPath
-
-# Load the validation of the config files
-validationIndex = Validator.validateConfigs(currentDirPath)
-
-noErrors = True
-
-# Iterate over the index of the verifications
-for filePath, isValid in validationIndex.iteritems():
-  filePath = filePath if not onGithub else str.replace(filePath, currentDirPath + "/", "")
-  if isValid == True:
-    # http://www.fileformat.info/info/unicode/char/2714/index.htm
-    v = str(u'\u2714'.encode('UTF-8'))
-    print bcolors.OKGREEN + v + " File " + filePath + " is valid!" + bcolors.ENDC
-
-  else:
-    isValid = isValid if not onGithub else str.replace(str(isValid), currentDirPath + "/", "")
-    # Only when we are running in github
-    # http://www.fileformat.info/info/unicode/char/2718/index.htm
-    x = str(u'\u2718'.encode('UTF-8'))
-    print bcolors.FAIL + x + " File " + filePath + " is NOT valid: " + str(isValid) + bcolors.ENDC
-    noErrors = False
-
-# Exist with the value for errors
-sys.exit(0 if noErrors else 1)
+  Execution.execute()
