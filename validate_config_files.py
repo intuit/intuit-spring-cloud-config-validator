@@ -42,6 +42,12 @@ class ExecutionContext:
 
   @staticmethod
   def getCurrentDirPath():
+    """Calculates the current directory to validate based on the execution
+       * If we are executing tests, it will be CURRENT_PATH/tests
+       * Current directory is set by default
+       * If it is provided by parameter, then we change it.
+       * If it is executed as a Github Enterprise as a pre-receive hook
+    """
     # http://stackoverflow.com/questions/34598626/how-do-i-check-if-code-is-being-run-from-a-nose-test/34598987#34598987
     if ExecutionContext.isOnTestCases():
       return os.path.dirname(os.path.realpath(__file__)) + "/tests"
@@ -71,7 +77,7 @@ class ExecutionContext:
       (base, commit, ref) = line.strip().split()
       print "Processing base=" + base + " commit=" + commit + " ref=" + ref
 
-      currentDirPath = Validator.processPrehookFilesInGithub(base, commit)
+      currentDirPath = Validator.processPreReceivehookFilesInGithub(base, commit)
       if "0000000" not in base:
         print ShellColor.WARNING + "=> Validating " + base + ".." + commit
 
@@ -86,6 +92,8 @@ class GitRepo:
   # Execute any git command in python
   @staticmethod
   def git(args):
+    """Executes a git command"""
+
     environ = os.environ.copy()
     proc = subprocess.Popen(args, stdout=subprocess.PIPE, env=environ)
     return proc.communicate()
@@ -93,6 +101,8 @@ class GitRepo:
   # The set of files changed in the current changes
   @staticmethod
   def listConfigFilesInGitCommits(base, commit):
+    """Gets the list of all files changed in the current commit"""
+
     # http://stackoverflow.com/questions/1552340/how-to-list-the-file-names-only-that-changed-between-two-commits
     # https://robots.thoughtbot.com/input-output-redirection-in-the-shell
     # git show --pretty="format:" --name-only | cat
@@ -108,6 +118,8 @@ class GitRepo:
 
   @staticmethod
   def openCommitFileContent(fileName, commit = "HEAD"):
+    """Gets the contents of a given fileName"""
+
     # Show the file at the head
     # git show HEAD:application.properties | cat
     (results, code) = GitRepo.git(('git', 'show', commit + ":" + fileName))
@@ -160,16 +172,20 @@ class ConfigFileValidator:
       return sys.exc_info()[1]
 
 class Validator:
-  """All operations related to the file-system"""
+  """Validates a given set of config files under a given directory."""
 
   # List the config files based on the given extension.
   @staticmethod
   def listConfigFiles(dirPath, extension):
+    """Lists all the config files in a given directory with the given extension"""
+
     return glob.glob(os.path.join(dirPath, extension))
 
   # Saves the given content in the file path from the contextDir
   @staticmethod
-  def saveCommitFileContent(fileName, content, contextDir):
+  def saveFileContent(fileName, content, contextDir):
+    """Saves the file contents in a given directory"""
+
     filePath = contextDir + "/" + fileName
 
     # Save the file in the context
@@ -181,6 +197,8 @@ class Validator:
   # Create the context path for the file if it does not exist
   @staticmethod
   def createContextDir(context):
+    """Creates the context directory related to a value provided"""
+
     dirPath = "/tmp/" + context
     if not os.path.exists(dirPath):
       try:
@@ -195,7 +213,9 @@ class Validator:
   # Fetches the names of all files changed in the current hook and
   # process them all.
   @staticmethod
-  def processPrehookFilesInGithub(base, head):
+  def processPreReceivehookFilesInGithub(base, head):
+    """Processes the pre-receive hook in the github environment."""
+
     # Create a context Id for the process
     context = str(uuid.uuid4())
 
@@ -215,7 +235,7 @@ class Validator:
       # print content
 
       # Save the contents in the context directory
-      filePath = Validator.saveCommitFileContent(fileName, content, contextDir)
+      filePath = Validator.saveFileContent(fileName, content, contextDir)
       # print "File saved at " + filePath
 
     return contextDir
@@ -223,6 +243,8 @@ class Validator:
   # Listing all the valid spring cloud configuration files.
   @staticmethod
   def listAllConfigFiles(dirPath):
+    """Lists all the configuration files in a given directory"""
+
     configMatches = ["*.json", "*.yaml", "*.yml", "*.properties", ".*matrix*.json"]
 
     # Get all the types config files based on the matches.
@@ -235,6 +257,10 @@ class Validator:
   # Generates an index of the config files and the associated exception, if any
   @staticmethod
   def validateConfigs(dirPath):
+    """Validates all the configuration properties in a given directory and returns the validation
+        metatadata indexed by file name. The value can be the value or an error message.
+    """
+
     # The index of the files and if they are valid name=True | Exception
     fileValidatesIndex = {}
 
@@ -256,9 +282,12 @@ class Validator:
 #head = os.environ.get('GITHUB_PULL_REQUEST_HEAD')
 
 class ShellExecution:
+  """Provides implementation of the test execution in the command-line, printing validation reports"""
 
   @staticmethod
   def run(dirPath = None):
+    """Runs the validation on a given directory, printing the report about each file verified"""
+
     # Starting the process
     print ShellColor.BOLD + ShellColor.OKBLUE + "##################################################" + ShellColor.ENDC
     print ShellColor.BOLD + ShellColor.OKBLUE + "###### Spring Cloud Config Validator " + VERSION + " #######" + ShellColor.ENDC
@@ -271,6 +300,8 @@ class ShellExecution:
 
   @staticmethod
   def explain(currentDirPath, validationIndex):
+    """Explains the report based on the indexed results of the validator execution"""
+
     noErrors = True
 
     # Iterate over the index of the verifications
