@@ -11,6 +11,16 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 # Import the script
 import validate_config_files as ValidatorScript
 
+# The background colors used below
+class ShellColor:
+  HEADER = '\033[95m'
+  OKBLUE = '\033[94m'
+  OKGREEN = '\033[92m'
+  WARNING = '\033[93m'
+  FAIL = '\033[91m'
+  ENDC = '\033[0m'
+  BOLD = '\033[1m'
+
 # Expose out a couple of constants for the paths.
 APP_DIR_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 TESTS_DIR_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -31,7 +41,14 @@ def printFileValidationStatus(filePath, validationObject):
 
   isValid = isConfigValid(validationObject)
   message = str(isValid) if isValid else str(isValid) + " ERROR: " + str(validationObject)
-  print "is " + getRelativeFixturePath(filePath) + " valid? " + message
+
+  # The V of successful in green
+  v = ShellColor.OKGREEN + str(u'\u2714'.encode('UTF-8'))
+  # The X of failure in red
+  x = ShellColor.FAIL + str(u'\u2718'.encode('UTF-8'))
+  shellStatus = v if isValid else x
+
+  print shellStatus + " is " + getRelativeFixturePath(filePath) + " valid? " + message + ShellColor.ENDC
 
 class ValidationAssertions:
   """Validation Assertions for the test cases to validate on the values."""
