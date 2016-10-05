@@ -18,18 +18,19 @@ class InvalidMatrixFileTests(unittest.TestCase, ValidationAssertions):
 
   def test_all_matrix_json_files_are_invalid(self):
     print "The android matrix file is invalid"
-    for filePath, isValid in self.validationIndex.iteritems():
-      print "is " + getRelativeFixturePath(filePath) + " valid? " + str(isValid)
+    for filePath, validationObject in self.validationIndex.iteritems():
+      isValid = isConfigValid(validationObject)
+      printFileValidationStatus(filePath, validationObject)
 
       # Verify if the directory is in the file path
       self.assertIn(FIXTURE_DIR, filePath)
 
       # Only the matrix android file is broken
       if ".matrix-android.json" in filePath:
-        self.assertThatConfigIsInvalid(filePath, isValid)
+        self.assertThatConfigIsInvalid(filePath, validationObject)
 
       else:
-        self.assertThatConfigIsValid(filePath, isValid)
+        self.assertThatConfigIsValid(filePath, validationObject)
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(InvalidMatrixFileTests)

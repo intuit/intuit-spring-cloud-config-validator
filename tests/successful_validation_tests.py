@@ -6,7 +6,7 @@ import unittest
 FIXTURE_DIR = FIXTURES_DIR_PATH + "/all-valid-config"
 
 class AllSuccessfulTests(unittest.TestCase, ValidationAssertions):
-  """Basic test cases."""
+  """Basic test case when all the files are valid."""
 
   def setUp(self):
     # Load the validation of the config files
@@ -17,11 +17,15 @@ class AllSuccessfulTests(unittest.TestCase, ValidationAssertions):
     self.assertTrue(len(self.validationIndex) > 0)
 
   def test_all_properties_are_valid(self):
-    print "All tests are successful"
-    for filePath, isValid in self.validationIndex.iteritems():
-      print "is " + getRelativeFixturePath(filePath) + " valid? " + str(isValid)
+    print "All config files are valid"
+    for filePath, validationObject in self.validationIndex.iteritems():
+      printFileValidationStatus(filePath, validationObject)
+
+      # Verify if the directory is in the file path
       self.assertIn(FIXTURE_DIR, filePath)
-      self.assertThatConfigIsValid(filePath, isValid)
+
+      # Verify if each file is valid
+      self.assertThatConfigIsValid(filePath, validationObject)
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(AllSuccessfulTests)
