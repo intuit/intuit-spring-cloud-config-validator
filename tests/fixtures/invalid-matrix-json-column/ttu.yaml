@@ -1,0 +1,11 @@
+absoluteZeroActive: true
+liveHelpConfiguration: 
+  isEnabled: true
+  videoTestEnabled: true
+  hoursOfOperation: "Monday - Friday, 8AM-5PM PST"
+myTTAPIVersion: "V1"
+dateConfigSet: 
+  TTOStartDate: "12/01/2015"
+  fileByDate: "04/18/2016"
+test: true
+

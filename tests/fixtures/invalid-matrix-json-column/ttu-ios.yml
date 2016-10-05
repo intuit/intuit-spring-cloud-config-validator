@@ -1,0 +1,59 @@
+screenidsForMojo: 
+  - "hardstop"
+  - "S1040PERbfdi10104447"
+  - "S1040PERbfdi4299"
+  - "S1040PERbfdi10103467"
+  - "S1040PERbfdi7921"
+  - "S1040PERbfdi1808"
+  - "S1040PERbfdi856824732"
+  - "prepare_state_home"
+  - "S2014ZNYbnyi231"
+  - "S1040PERbfdi7846"
+  - "S1040PERcfdi856824732"
+  - "S2014ZCAbcai5676"
+  - "S1040PERbfdi7365"
+  - "S1040PERbfdi7889"
+  - "S1040PERbfdi1833"
+  - "S1040PERbfdi85682336"
+  - "S1040PERbfdi85682440"
+  - "S2014ZINbini204"
+  - "S1040PERbfdi10105091"
+  - "S1040PERbfdi7435"
+  - "S1040PERbfdi10103024"
+  - "S2014ZCAbcai805"
+  - "S1040PERbfdi8641"
+  - "S1040PERbfdi856824810"
+minAppVersion: "2.12"
+OCRActive: true
+buttonExposure: "max"
+webFailover: false
+TTOSessionPreload: true
+watchEnabled: true
+fuegoWebFallback: true
+genericConfigSet: 
+  welcomeExperienceType: "native"
+OCRConfigSet: 
+  ocrFlashOn: true
+  disabledOCRDevices: 
+    - "iPad2,1"
+    - "iPad2,5"
+    - "iPad4,1"
+    - "iPod4,1"
+    - "iPod5,1"
+    - "iPhone4,1"
+paymentV2: true
+fuegoConfigSet: 
+  nativeTopics: 
+    - "autoregistrationfees"
+  nativeDisabledDevices: 
+    - "iPod5,1"
+liveHelpConfigSet: 
+  piiMaskingEnabled: true
+webViewConfigSet: 
+  externalContent: "wk"
+  myTT: "ui"
+  tto: "ui"
+  answerExchange: "ui"
+gtkmEnabled: true
+temp1: false
+appshellEnabled: false

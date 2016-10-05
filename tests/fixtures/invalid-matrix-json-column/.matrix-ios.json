@@ -1,0 +1,24 @@
+   {
+	"appName": "ttu",
+	"rootProfile": "ios",
+	"profilesSequence": [
+		"appVersion",
+		"osVersion"
+	],
+	"sigVersions": ["V2"],
+	"outputTypes": ["json"],
+	"profiles": [{
+		"id": "appVersion",
+		"descriptions": [
+			"2.8",
+			"2.9",
+			"2.10",
+			"2.11",
+			"2.11.0.3",
+			"2.12",
+			"2.12.1",
+			"2.13",
+			"3.0"
+		]
+	}]
+}

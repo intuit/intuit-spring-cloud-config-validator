@@ -3,10 +3,10 @@ import trace, sys
 from .context import *
 import unittest
 
-FIXTURE_DIR = FIXTURES_DIR_PATH + "/all-valid-config"
+FIXTURE_DIR = FIXTURES_DIR_PATH + "/invalid-matrix-json-column"
 
-class AllSuccessfulTests(unittest.TestCase, ValidationAssertions):
-  """Basic test cases."""
+class InvalidMatrixFileTests(unittest.TestCase, ValidationAssertions):
+  """Basic test case for when the matrix file is invalid."""
 
   def setUp(self):
     # Load the validation of the config files
@@ -16,15 +16,23 @@ class AllSuccessfulTests(unittest.TestCase, ValidationAssertions):
     self.assertTrue(isinstance(self.validationIndex, dict))
     self.assertTrue(len(self.validationIndex) > 0)
 
-  def test_all_properties_are_valid(self):
-    print "All tests are successful"
+  def test_all_matrix_json_files_are_invalid(self):
+    print "The android matrix file is invalid"
     for filePath, isValid in self.validationIndex.iteritems():
       print "is " + getRelativeFixturePath(filePath) + " valid? " + str(isValid)
+
+      # Verify if the directory is in the file path
       self.assertIn(FIXTURE_DIR, filePath)
-      self.assertThatConfigIsValid(filePath, isValid)
+
+      # Only the matrix android file is broken
+      if ".matrix-android.json" in filePath:
+        self.assertThatConfigIsInvalid(filePath, isValid)
+
+      else:
+        self.assertThatConfigIsValid(filePath, isValid)
 
 if __name__ == '__main__':
-  suite = unittest.TestLoader().loadTestsFromTestCase(AllSuccessfulTests)
+  suite = unittest.TestLoader().loadTestsFromTestCase(InvalidMatrixFileTests)
   unittest.TextTestRunner(verbosity=2).run(suite)
 
   #t = trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], count=1, trace=0)
