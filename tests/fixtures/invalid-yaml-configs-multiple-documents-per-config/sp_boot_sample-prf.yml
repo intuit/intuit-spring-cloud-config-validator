@@ -1,0 +1,47 @@
+
+
+info:
+  description: 'Properties specific to "prf" (performance) environment; also includes any settings for "aws" profile in prf.'
+
+
+# PRF backend currently is only sp-service-9-prf-qydc.platform.intuit.net:443 -- i.e., no LVDC
+jsk:
+  service:
+    info:
+      env: prf
+  servlet:
+    diag:  ## formerly sp_diagnostics:
+      dependencies:
+        app:
+          0:
+            url: 'https://access-prf.platform.intuit.net/health/full'
+            name: IUS
+    lastmile:
+      audience: 'https://sp-service-9-prf-'
+
+security:
+  intuit:
+    accessServiceEndpoint: 'https://access-prf.platform.intuit.net/v2/tickets'
+
+---
+
+spring:
+  profiles: aws
+
+jsk:
+  servlet:
+    diag: ## formerly sp_diagnostics:
+      dependencies:
+        app:
+          0:
+            url: 'https://access-prf.platform.intuit.com/health/full'
+            name: IUS
+    lastmile:
+      audience: 'https://sp-boot-sample-prf.platform.intuit.com'
+
+security:
+  intuit:
+    accessServiceEndpoint: 'https://access-prf.platform.intuit.com/v2/tickets'
+    proxyhost: egress-proxy
+    proxyport: 3128
+

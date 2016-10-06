@@ -1,0 +1,51 @@
+
+info:
+  description: 'Properties specific to "dev" environment; also includes any settings for "aws" profile in dev, if specified.'
+
+
+jsk:
+  service:
+    info:
+      env: dev
+  servlet:
+    diag:  ## formerly sp_diagnostics:
+      dependencies:
+        app:
+          0:
+            url: 'https://access-e2e.platform.intuit.net/health/full'
+            name: IUS
+    lastmile:
+      enabled: false  # dev is the only environment where lastmile is not used
+    logging:
+      utils:
+        # Override the pruning for developers who may need to see the whole stack trace
+        stackTracePruningEnabled: false
+      filter:
+        # developers may wish to see request & response bodies... can be optionally 
+        # set in QA and E2E, too -- but do not set in perf or prod!
+        includeRequestInfo: true
+        includeResponseInfo: true
+
+---
+
+# The difference here between plain "dev" and "dev on AWS" is ".net" vs ".com"
+
+spring:
+  profiles: aws
+
+jsk:
+  servlet:
+    diag: ## formerly sp_diagnostics:
+      dependencies:
+        app:
+          0:
+            url: 'https://access-e2e.platform.intuit.com/health/full'
+            name: IUS
+
+security:
+  intuit:
+    accessServiceEndpoint: 'https://access-e2e.platform.intuit.com/v2/tickets'
+    proxyhost: egress-proxy
+    proxyport: 3128
+
+
