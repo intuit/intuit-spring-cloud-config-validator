@@ -165,8 +165,15 @@ class ConfigFileValidator:
 
     except yaml.composer.ComposerError, multipleDocsError:
       # When multiple documents exist in the file, try loading them all
-      yaml.load_all(open(filePath), Loader = yaml.Loader)
-      return True
+
+      try:
+        # Each document will only be parsed when evaluated
+        for document in yaml.load_all(open(filePath), Loader = yaml.Loader):
+          document = str(document)
+
+        return True
+      except:
+        return sys.exc_info()[1]
 
     except:
       return sys.exc_info()[1]

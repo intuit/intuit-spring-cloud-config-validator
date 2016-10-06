@@ -20,11 +20,10 @@ jsk:
 
 ---
 
+ ddd
 
 spring:
   profiles: aws
-
-          ---------------------------->>>>>>>>>>>> key floting ERRRRRRRRRORRRRRRR
 
 jsk:
   servlet:
