@@ -10,7 +10,7 @@ import uuid
 from pyjavaproperties import Properties
 
 # Verion of this script, printed in the output
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 
 # The background colors used below
 class ShellColor:
