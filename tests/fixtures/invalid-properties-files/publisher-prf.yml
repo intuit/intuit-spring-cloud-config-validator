@@ -1,0 +1,5 @@
+jsk:
+  servlet:
+    lastmile:
+      audience: 'https://sp-service-30-prf-qydc.platform.intuit.net' # https://devinternal.intuit.com/index.html#/main/service-home/2596342777370178544/checklist
+      enable: true
