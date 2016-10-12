@@ -228,6 +228,12 @@ error: failed to push some refs to 'git@192.168.154.132:test.git'
 
 ## Code Coverage
 
+> Based on the following: 
+> * https://coverage.readthedocs.io/en/coverage-4.2/source.html#source
+> * https://coverage.readthedocs.io/en/coverage-4.2/
+> * https://github.com/audreyr/how-to/blob/master/python/use_coverage_with_unittest.rst
+> * http://stackoverflow.com/questions/3312451/how-can-you-get-unittest2-and-coverage-py-working-together
+
 You can generate the code coverage by running the following:
 
 ```
