@@ -225,3 +225,49 @@ To git@192.168.154.132:test.git
  ! [remote rejected] master -> master (pre-receive hook declined)
 error: failed to push some refs to 'git@192.168.154.132:test.git'
 ```
+
+## Code Coverage
+
+> Based on the following: 
+> * https://coverage.readthedocs.io/en/coverage-4.2/source.html#source
+> * https://coverage.readthedocs.io/en/coverage-4.2/
+> * https://github.com/audreyr/how-to/blob/master/python/use_coverage_with_unittest.rst
+> * http://stackoverflow.com/questions/3312451/how-can-you-get-unittest2-and-coverage-py-working-together
+
+You can generate the code coverage by running the following:
+
+```
+$ coverage run -m unittest discover -v tests         
+test_some_yaml_yml_files_are_invalid (test_invalid_yaml_yml_multi_document_validation.InvalidYamlMultiDocumentFileTests) ... Some Yaml Multi documents are invalid
+✔ is tests/fixtures/invalid-yaml-configs-multiple-documents-per-config/sp_boot_sample-prf.yml valid? True
+✔ is tests/fixtures/invalid-yaml-configs-multiple-documents-per-config/sp_boot_sample-dev.yml valid? True
+✘ is tests/fixtures/invalid-yaml-configs-multiple-documents-per-config/sp_boot_sample-e2e.yml valid? False ERROR: expected '<document start>', but found '<block mapping start>'
+...
+...
+✔ is tests/fixtures/all-valid-config/publisher-onboard_preprod.yml valid? True
+✔ is tests/fixtures/all-valid-config/application-multi-documents.yml valid? True
+✔ is tests/fixtures/all-valid-config/publisher-dev.yml valid? True
+ok
+test_that_validation_index_is_dictionary (test_all_valid_config_validation.AllSuccessfulTests) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.258s
+
+OK
+```
+
+You can view the Code Coverage reports in the terminal as follows:
+
+```
+$ coverage report
+Name                       Stmts   Miss  Cover
+----------------------------------------------
+validate_config_files.py     144     63    56%
+```
+
+Or you can view the HTML reports, just like the following:
+
+```
+coverage html
+open html_cov/index.html
+```
