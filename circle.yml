@@ -11,5 +11,6 @@ test:
     - pip install coverage
   override:
     - coverage run -m unittest discover -v tests  
+    - ls -la .
   post:
     - mv html_cov $CIRCLE_ARTIFACTS/coverage_html
