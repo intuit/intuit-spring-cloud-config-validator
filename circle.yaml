@@ -1,0 +1,13 @@
+machine:
+  python:
+    version: 2.7.10
+
+dependencies:
+  pre:
+    - pip install -r requirements.txt
+
+test:
+  override:
+    - coverage run -m unittest discover -v tests  
+  post:
+    - mv html_cov $CIRCLE_ARTIFACTS/coverage_html
