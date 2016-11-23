@@ -10,6 +10,7 @@ test:
   pre:
     - pip install coverage
   override:
-    - coverage run -m unittest discover -v tests
+    - coverage run -m unittest discover -v tests  
   post:
+    - mkdir $CIRCLE_ARTIFACTS/coverage_html
     - coverage html -d $CIRCLE_ARTIFACTS/coverage_html
