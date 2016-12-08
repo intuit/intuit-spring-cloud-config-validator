@@ -1,0 +1,8 @@
+FROM springboot-config-verification
+MAINTAINER Marcello_deSales@intuit.com
+
+RUN \
+  apk add --no-cache py-pip && \
+  pip install pyyaml pyjavaproperties
+
+ADD validate-config-files.py /home/git/test.git/hooks/pre-receive
