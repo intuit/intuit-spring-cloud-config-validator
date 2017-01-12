@@ -302,6 +302,7 @@ class ShellExecution:
     print ShellColor.BOLD + ShellColor.OKBLUE + "##################################################" + ShellColor.ENDC
     print ShellColor.BOLD + ShellColor.OKBLUE + "###### Spring Cloud Config Validator " + VERSION + " #######" + ShellColor.ENDC
     print ShellColor.BOLD + ShellColor.OKBLUE + "##################################################" + ShellColor.ENDC
+    print ShellColor.BOLD + ShellColor.OKBLUE + "# Method: " + os.environ.get('GITHUB_VIA') + ShellColor.ENDC
 
     currentDirPath = dirPath if dirPath else ExecutionContext.getCurrentDirPath()
 
