@@ -207,7 +207,7 @@ class Validator:
   def createContextDir(context):
     """Creates the context directory related to a value provided"""
 
-    dirPath = "/tmp/" + context
+    dirPath = os.getcwd() + "/" + context
     if not os.path.exists(dirPath):
       try:
         os.makedirs(dirPath)
