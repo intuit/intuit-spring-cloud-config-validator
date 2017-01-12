@@ -207,7 +207,7 @@ class Validator:
   def createContextDir(context):
     """Creates the context directory related to a value provided"""
 
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    files = [f for f in os.environ.get('GIT_DIR') if os.path.isfile(f)]
     for f in files:
       print f
 
