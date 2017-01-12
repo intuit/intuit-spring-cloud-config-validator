@@ -6,7 +6,6 @@ import os
 import glob
 import json
 import yaml 
-import uuid
 import errno
 from pyjavaproperties import Properties
 
@@ -76,7 +75,7 @@ class ExecutionContext:
       # When creating a new ref, < old-value > is 40 00000000000000000.
       line = sys.stdin.read()
       (base, commit, ref) = line.strip().split()
-      print "Processing base=" + base + " commit=" + commit + " ref=" + ref
+      print "Processing commit=" + commit + " ref=" + ref
 
       currentDirPath = Validator.processPreReceivehookFilesInGithub(base, commit)
       if "0000000" not in base:
@@ -227,7 +226,7 @@ class Validator:
     """Processes the pre-receive hook in the github environment."""
 
     # Create a context Id for the process
-    context = str(uuid.uuid4())
+    context = head
 
     # Create the context directory to save the current state of the files
     contextDir = Validator.createContextDir(context)
