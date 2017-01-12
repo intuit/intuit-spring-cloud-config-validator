@@ -7,6 +7,7 @@ import glob
 import json
 import yaml 
 import uuid
+import errno
 from pyjavaproperties import Properties
 
 # Verion of this script, printed in the output
