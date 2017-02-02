@@ -206,9 +206,7 @@ class Validator:
   def createContextDir(context):
     """Creates the context directory related to a value provided"""
 
-    print "Files are on " + os.environ.get('GIT_DIR')
-
-    dirPath = os.getcwd() + "/" + context
+    dirPath = "/tmp/" + context
     if not os.path.exists(dirPath):
       try:
         os.makedirs(dirPath)
