@@ -62,7 +62,7 @@ class ExecutionContext:
 
     # If the execution is on github
     if not ExecutionContext.isOnGithub():
-      print ShellColor.WARNING + "=> Validating directory " + currentDirPath
+      print ShellColor.WARNING + "=> Validating repo " + currentDirPath
 
     else:
       # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#writing-a-pre-receive-hook-script
@@ -300,8 +300,8 @@ class ShellExecution:
     print ShellColor.BOLD + ShellColor.OKBLUE + "###### Spring Cloud Config Validator " + VERSION + " #######" + ShellColor.ENDC
     print ShellColor.BOLD + ShellColor.OKBLUE + "##################################################" + ShellColor.ENDC
 
-    for key in os.environ.keys():
-      print "%30s %s \n" % (key,os.environ[key])
+    #for key in os.environ.keys():
+    #  print "%30s %s \n" % (key,os.environ[key])
 
     currentDirPath = dirPath if dirPath else ExecutionContext.getCurrentDirPath()
 
