@@ -5,22 +5,12 @@ import subprocess
 import os
 import glob
 import json
-import yaml 
+import yaml
 import errno
 from pyjavaproperties import Properties
 
 # Verion of this script, printed in the output
 VERSION = "0.1.4"
-
-# The background colors used below
-class ShellColor:
-  HEADER = '\033[95m'
-  OKBLUE = '\033[94m'
-  OKGREEN = '\033[92m'
-  WARNING = '\033[93m'
-  FAIL = '\033[91m'
-  ENDC = '\033[0m'
-  BOLD = '\033[1m'
 
 class ExecutionContext:
   """Decider of what to execute"""
@@ -62,16 +52,16 @@ class ExecutionContext:
 
     # If the execution is on github
     if not ExecutionContext.isOnGithub():
-      print ShellColor.WARNING + "=> Validating repo " + currentDirPath
+      print "=> Validating repo " + currentDirPath
 
     else:
       # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#writing-a-pre-receive-hook-script
       # It takes no arguments, but for each ref to be updated it receives on standard input a line of the format:
       #      <old-value> SP <new-value> SP <ref-name> LF
-      # where 
+      # where
       # * <old-value> is the old object name stored in the ref,
       # * <new-value> is the new object name to be stored in the ref,
-      # * <ref-name> is the full name of the ref. 
+      # * <ref-name> is the full name of the ref.
       # When creating a new ref, < old-value > is 40 00000000000000000.
       line = sys.stdin.read()
       (base, commit, ref) = line.strip().split()
@@ -79,10 +69,10 @@ class ExecutionContext:
 
       currentDirPath = Validator.processPreReceivehookFilesInGithub(base, commit)
       if "0000000" not in base:
-        print ShellColor.WARNING + "=> Validating " + base + ".." + commit
+        print "=> Validating " + base + ".." + commit
 
       else:
-        print ShellColor.WARNING + "=> Validating SHA " + commit
+        print "=> Validating SHA " + commit
 
     return currentDirPath
 
@@ -149,7 +139,7 @@ class ConfigFileValidator:
     p = Properties()
     try:
       p.load(open(filePath))
-      return True 
+      return True
 
     except:
       return sys.exc_info()[1]
@@ -237,7 +227,7 @@ class Validator:
     # Process and validate each individual file
     # print "Processing context " + context
     for fileName in files:
-      # Open the contents 
+      # Open the contents
       content = GitRepo.openCommitFileContent(fileName, head)
       # print content
 
@@ -296,9 +286,9 @@ class ShellExecution:
     """Runs the validation on a given directory, printing the report about each file verified"""
 
     # Starting the process
-    print ShellColor.BOLD + ShellColor.OKBLUE + "##################################################" + ShellColor.ENDC
-    print ShellColor.BOLD + ShellColor.OKBLUE + "###### Spring Cloud Config Validator " + VERSION + " #######" + ShellColor.ENDC
-    print ShellColor.BOLD + ShellColor.OKBLUE + "##################################################" + ShellColor.ENDC
+    print "##################################################"
+    print "###### Spring Cloud Config Validator " + VERSION + " #######"
+    print "##################################################"
 
     #for key in os.environ.keys():
     #  print "%30s %s \n" % (key,os.environ[key])
@@ -318,16 +308,12 @@ class ShellExecution:
     for filePath, isValid in validationIndex.iteritems():
       filePath = filePath if not ExecutionContext.isOnGithub() else str.replace(filePath, currentDirPath + "/", "")
       if isValid == True:
-        # http://www.fileformat.info/info/unicode/char/2714/index.htm
-        v = str(u'\u2714'.encode('UTF-8'))
-        print ShellColor.OKGREEN + v + " File " + filePath + " is valid!" + ShellColor.ENDC
+        print " File " + filePath + " is valid!"
 
       else:
         isValid = isValid if not ExecutionContext.isOnGithub() else str.replace(str(isValid), currentDirPath + "/", "")
         # Only when we are running in github
-        # http://www.fileformat.info/info/unicode/char/2718/index.htm
-        x = str(u'\u2718'.encode('UTF-8'))
-        print ShellColor.FAIL + x + " File " + filePath + " is NOT valid: " + str(isValid) + ShellColor.ENDC
+        print " File " + filePath + " is NOT valid: " + str(isValid)
         noErrors = False
 
     # Exist with the value for errors
