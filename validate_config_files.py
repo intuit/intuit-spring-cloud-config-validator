@@ -308,12 +308,12 @@ class ShellExecution:
     for filePath, isValid in validationIndex.iteritems():
       filePath = filePath if not ExecutionContext.isOnGithub() else str.replace(filePath, currentDirPath + "/", "")
       if isValid == True:
-        print " File " + filePath + " is valid!"
+        print "(v) File " + filePath + " is valid!"
 
       else:
         isValid = isValid if not ExecutionContext.isOnGithub() else str.replace(str(isValid), currentDirPath + "/", "")
         # Only when we are running in github
-        print " File " + filePath + " is NOT valid: " + str(isValid)
+        print "(x) File " + filePath + " is invalid: " + str(isValid)
         noErrors = False
 
     # Exist with the value for errors
