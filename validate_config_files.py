@@ -96,11 +96,7 @@ class GitRepo:
     # http://stackoverflow.com/questions/1552340/how-to-list-the-file-names-only-that-changed-between-two-commits
     # https://robots.thoughtbot.com/input-output-redirection-in-the-shell
     # git show --pretty="format:" --name-only | cat
-    if "0000000000" not in base:
-      (results, code) = GitRepo.git(('git', 'show', base + ".." + commit, '--pretty=format:', '--name-only'))
-
-    else:
-      (results, code) = GitRepo.git(('git', 'show', commit, '--pretty=format:', '--name-only'))
+    (results, code) = GitRepo.git(('git', 'show', base + ".." + commit, '--pretty=format:', '--name-only'))
 
     # Filter the non-empty, non-repeated elements as the command returns a\nb\n\c
     # http://stackoverflow.com/questions/33944647/what-is-the-most-pythonic-way-to-filter-a-set/33944663#33944663
