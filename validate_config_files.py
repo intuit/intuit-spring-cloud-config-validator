@@ -290,8 +290,8 @@ class ShellExecution:
     print "###### Spring Cloud Config Validator " + VERSION + " #######"
     print "##################################################"
 
-    for key in os.environ.keys():
-      print "%30s %s \n" % (key,os.environ[key])
+    #for key in os.environ.keys():
+    #  print "%30s %s \n" % (key,os.environ[key])
 
     currentDirPath = dirPath if dirPath else ExecutionContext.getCurrentDirPath()
 
