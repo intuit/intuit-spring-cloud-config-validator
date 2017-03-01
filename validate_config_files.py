@@ -65,6 +65,15 @@ class ExecutionContext:
       # When creating a new ref, < old-value > is 40 00000000000000000.
       line = sys.stdin.read()
       (base, commit, ref) = line.strip().split()
+
+      # Deleting a branch should NOT validate anything... skipping...
+      if "0000000" in commit:
+        print "Deleting branch... Skip validation"
+        exit(0)
+
+      if "0000000" in base:
+        print "Validating new branch..."
+
       print "Processing commit=" + commit + " ref=" + ref
 
       currentDirPath = Validator.processPreReceivehookFilesInGithub(base, commit)
@@ -100,7 +109,8 @@ class GitRepo:
       (results, code) = GitRepo.git(('git', 'show', base + ".." + commit, '--pretty=format:', '--name-only'))
 
     else:
-      (results, code) = GitRepo.git(('git', 'show', commit, '--pretty=format:', '--name-only'))
+      # All files in the current revision. No way to know which files changed in new branch
+      (results, code) = GitRepo.git(('git', 'ls-tree', '-r', 'HEAD', '--name-only'))
 
     # Filter the non-empty, non-repeated elements as the command returns a\nb\n\c
     # http://stackoverflow.com/questions/33944647/what-is-the-most-pythonic-way-to-filter-a-set/33944663#33944663
@@ -242,6 +252,7 @@ class Validator:
   def listAllConfigFiles(dirPath):
     """Lists all the configuration files in a given directory"""
 
+    # Valid configuration files
     configMatches = ["*.json", "*.yaml", "*.yml", "*.properties", ".*matrix*.json"]
 
     # Get all the types config files based on the matches.
