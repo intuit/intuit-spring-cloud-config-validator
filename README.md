@@ -7,6 +7,8 @@ Python script that validates Spring Cloud Config configuration repos by analyzin
 
 ![Validation with errors](https://jira.intuit.com/secure/attachment/643347/643347_execute-from-curl.png)
 
+![GIthubValidator](https://github.intuit.com/services-configuration/spring-cloud-config-validator/wiki/images/enabled-spring-cloud-config-validator.png)
+
 # Requirements
 
 * Install Python 2.6+
