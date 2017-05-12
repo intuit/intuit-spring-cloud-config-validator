@@ -5,6 +5,8 @@ Python script that validates Spring Cloud Config configuration repos by analyzin
 * Manual Validations
 * Github Pre-receive Hook Status Validations: Commits and Pull Requests  
 
+> *USER REFERENCE DOCUMENTATION*: For user reference and how-to, please go to the `Wiki page` of this repo clicking in the icon above. 
+
 ![Validation with errors](https://github.intuit.com/storage/user/42/files/91ffb398-3702-11e7-944c-813b1072db5e)
 
 ![GIthubValidator](https://github.intuit.com/services-configuration/spring-cloud-config-validator/wiki/images/enabled-spring-cloud-config-validator.png)
