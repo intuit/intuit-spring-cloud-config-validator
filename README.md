@@ -5,7 +5,7 @@ Python script that validates Spring Cloud Config configuration repos by analyzin
 * Manual Validations
 * Github Pre-receive Hook Status Validations: Commits and Pull Requests  
 
-![Validation with errors](https://jira.intuit.com/secure/attachment/643347/643347_execute-from-curl.png)
+![Validation with errors](https://github.intuit.com/storage/user/42/files/91ffb398-3702-11e7-944c-813b1072db5e)
 
 ![GIthubValidator](https://github.intuit.com/services-configuration/spring-cloud-config-validator/wiki/images/enabled-spring-cloud-config-validator.png)
 
@@ -108,13 +108,13 @@ $ validate-config-files.py /another/springcloud/config/directory
 
 The execution of the script succeeds and returns 0.
 
-![Validation without errors](https://jira.intuit.com/secure/attachment/639030/validation-no-errors.png)
+![Validation without errors](https://github.intuit.com/storage/user/42/files/9701d376-3702-11e7-968b-a69ffb809b8b)
 
 ## Validation with errors
 
 The execution of the script fails and returns 1.
 
-![Validation with errors](https://jira.intuit.com/secure/attachment/639031/validation-with-errors.png)
+![Validation with errors](https://github.intuit.com/storage/user/42/files/8df40bbe-3702-11e7-9d76-47c63599250e)
 
 # Github Enterprise Pre-receive
 
@@ -126,11 +126,11 @@ The execution of a pre-receive hook in Github prevents users from pushing code w
 
 * Github Change on a local workspace
 
-![git change](https://jira.intuit.com/secure/attachment/643248/git-show-commit.png)
+![git change](https://github.intuit.com/storage/user/42/files/8afc1ac8-3702-11e7-9f7a-e8f8349616db)
 
 * Git push fails when errors are in the files
 
-![Github Pre-receive Failure](https://jira.intuit.com/secure/attachment/643249/pre-receive-hook-docker.png)
+![Github Pre-receive Failure](https://github.intuit.com/storage/user/42/files/21edf618-3703-11e7-86e6-bbc4f4e22555)
 
 # Development
 
