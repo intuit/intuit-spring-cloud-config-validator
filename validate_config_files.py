@@ -6,11 +6,15 @@ import os
 import glob
 import json
 import yaml
+
+from yamllint.config import YamlLintConfig
+from yamllint import linter
+
 import errno
 from pyjavaproperties import Properties
 
 # Verion of this script, printed in the output
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 class ExecutionContext:
   """Decider of what to execute"""
@@ -159,24 +163,18 @@ class ConfigFileValidator:
   def isYamlFileValid(filePath):
     """Verifies if a given yaml file is valid"""
 
-    try:
-      yaml.load(open(filePath), Loader = yaml.Loader)
+    rules = yaml.safe_load("key-duplicates: enable\ndocument-start: disable\ntrailing-spaces: disable\nline-length: disable\ncomments-indentation: disable\ncomments: disable\nnew-line-at-end-of-file: disable\nempty-lines: disable\nindentation: disable")
+    conf = {'extends': 'default', 'rules': rules}
+    yamlLintConfig = YamlLintConfig(yaml.safe_dump(conf))
+
+    # ymlDocs = yaml.load(open(filePath), Loader = yaml.Loader)
+    lintError = list(linter.run(open(filePath), yamlLintConfig));
+
+    if lintError:
+      return lintError
+
+    else:
       return True
-
-    except yaml.composer.ComposerError, multipleDocsError:
-      # When multiple documents exist in the file, try loading them all
-
-      try:
-        # Each document will only be parsed when evaluated
-        for document in yaml.load_all(open(filePath), Loader = yaml.Loader):
-          document = str(document)
-
-        return True
-      except:
-        return sys.exc_info()[1]
-
-    except:
-      return sys.exc_info()[1]
 
 class Validator:
   """Validates a given set of config files under a given directory."""
