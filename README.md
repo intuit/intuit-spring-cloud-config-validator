@@ -219,7 +219,7 @@ Compressing objects: 100% (100/100), done.
 Writing objects: 100% (214/214), 21.50 KiB | 0 bytes/s, done.
 Total 214 (delta 127), reused 184 (delta 109)
 remote: ##################################################
-remote: ###### Spring Cloud Config Validator 0.1.3 #######
+remote: ###### Spring Cloud Config Validator 1.0.0 #######
 remote: ##################################################
 remote: Processing base=0000000000000000000000000000000000000000 commit=6ff408ac89564c994925c46847d775fff940caa3 ref=refs/heads/master
 remote: => Validating SHA 6ff408ac89564c994925c46847d775fff940caa3
