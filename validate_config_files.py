@@ -163,7 +163,7 @@ class ConfigFileValidator:
   def isYamlFileValid(filePath):
     """Verifies if a given yaml file is valid"""
 
-    rules = yaml.safe_load("key-duplicates: enable\ndocument-start: disable\ntrailing-spaces: disable\nline-length: disable\ncomments-indentation: disable\ncomments: disable\nnew-line-at-end-of-file: disable\nempty-lines: disable")
+    rules = yaml.safe_load("key-duplicates: enable\ndocument-start: disable\ntrailing-spaces: disable\nline-length: disable\ncomments-indentation: disable\ncomments: disable\nnew-line-at-end-of-file: disable\nempty-lines: disable\nindentation: disable")
     conf = {'extends': 'default', 'rules': rules}
     yamlLintConfig = YamlLintConfig(yaml.safe_dump(conf))
 
