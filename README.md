@@ -417,11 +417,17 @@ $ ls -lah spring-cloud-config-validator-v1.1.0.tar.gz
 -rw-r--r--  1 mdesales  CORP\Domain Users    27M Jun  5 18:25 spring-cloud-config-validator-v1.1.0.tar.gz
 ```
 
+* Upload it to Box
+
+https://intuit.app.box.com/folder/11497191386
+
+And provide the download Link in the Jira ticket below.
+
 ## Open GIT jira ticket
 
-* Open a ticket like the following, attaching the environment to the ticket: https://jira.intuit.com/browse/GIT-778.
+* Open a ticket like https://jira.intuit.com/browse/GIT-778.
+* Add the download link to the Environment `tar.gz` file from box.
 * Talk to Eric Castle in Slack for the procedure.
-
 
 ## Test in Github Dev
 
