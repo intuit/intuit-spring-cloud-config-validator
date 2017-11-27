@@ -8,6 +8,8 @@ Go to the [Wiki](https://github.com/intuit/spring-cloud-config-validator/wiki) f
 
 # Setup
 
+Go to the section for Production deployment as described below.
+
 After your Github Enterprise is setup, make sure to follow the steps at the [Setup Config Repo Pre-receive Hook](https://github.com/intuit/spring-cloud-config-validator/wiki/Setup-Config-Repo-Pre-receive-Hook) section.
 
 # Validations
@@ -280,13 +282,18 @@ open html_cov/index.html
 
 # Production Deployment
 
-* Base image is at https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-base/
- * Base the image following: https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-environment/#creating-a-pre-receive-hook-environment-using-docker.
- * Build the base Image
- * Build the Validator Image
-* Export the Docker environment as `tar.gz`
+* Base image is at the following:
+
+[![resolution](http://dockeri.co/image/intuit/spring-cloud-config-validator "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/intuit/spring-cloud-config-validator/)
+
+* The image was built using the steps at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-environment/#creating-a-pre-receive-hook-environment-using-docker.
+
+After building the image, you may follow these steps to validate the image locally:
+
+* Build/Pull the Validator Image.
+* Export the Image as a `Docker environment` in `tar.gz`.
 * Test it locally.
-* Test it in your Github Enterprise appliance https://github-dev.company.com
+* Test it in your Github Enterprise appliance https://github-dev.company.com.
 
 ```
 ssh-keygen: generating new host keys: RSA DSA ECDSA ED25519
