@@ -284,7 +284,7 @@ open html_cov/index.html
 
 * Base image is at the following:
 
-[![resolution](http://dockeri.co/image/intuit/spring-cloud-config-validator "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/intuit/spring-cloud-config-validator/)
+[![resolution](http://dockeri.co/image/intuit/spring-cloud-config-validator "Spring Cloud Config Validator Docker Image")](https://hub.docker.com/r/intuit/spring-cloud-config-validator/)
 
 * The image was built using the steps at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-environment/#creating-a-pre-receive-hook-environment-using-docker.
 
