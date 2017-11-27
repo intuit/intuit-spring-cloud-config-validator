@@ -1,4 +1,4 @@
-FROM github-enterprise-pre-receive-hook-base
+FROM marcellodesales/github-enterprise-prereceive-hook-base
 MAINTAINER Marcello_deSales@intuit.com
 
 RUN \
