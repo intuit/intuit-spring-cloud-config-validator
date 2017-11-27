@@ -1,12 +1,24 @@
 # spring-cloud-config-validator
 
-Github Enterprise pre-receive hook implementation for status validations: `Commits` and `Pull Requests` validated by running a python script that performs static validation of configuration repos used by Spring Cloud Config with `.json`, `.yaml`, `.yml` and `.properties` files.
+Github Enterprise pre-receive hook implementation for status validations: `Commits` and `Pull Requests` validated by running a python script that performs static validation of configuration repos used by Spring Cloud Config with `.json`, `.yaml`, `.yml` and `.properties` files. It implements the basic Pre-Receive hook steps detailed at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/.
 
 [![resolution](https://github.com/intuit/spring-cloud-config-validator/wiki/images/git-push-ui-validation-error.png "Spring Cloud Config Validator")](https://github.com/intuit/spring-cloud-config-validator/wiki)
 
 Go to the [Wiki](https://github.com/intuit/spring-cloud-config-validator/wiki) for more information!
 
-# Requirements
+# Setup
+
+After your Github Enterprise is setup, make sure to follow the steps at the [Setup Config Repo Pre-receive Hook](https://github.com/intuit/spring-cloud-config-validator/wiki/Setup-Config-Repo-Pre-receive-Hook) section.
+
+# Validations
+
+This is useful for teams using Spring Cloud Config repos and wants to be rest-assured that the configuration changes pushed to the repo won't break anything!
+
+* [Validate Local Commits](https://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Local-Commits)
+* [Validate Online Commits](https://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Online-Commits)
+* [Validate Pull Requests](hhttps://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Files-In-Pull-Request)
+
+# Development
 
 * Install Python 2.6+
 * Install Pip https://pip.pypa.io/en/stable/installing/
