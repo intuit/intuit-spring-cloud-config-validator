@@ -16,7 +16,7 @@ This is useful for teams using Spring Cloud Config repos and wants to be rest-as
 
 * [Validate Local Commits](https://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Local-Commits)
 * [Validate Online Commits](https://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Online-Commits)
-* [Validate Pull Requests](hhttps://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Files-In-Pull-Request)
+* [Validate Pull Requests](https://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Files-In-Pull-Request)
 
 # Development
 
