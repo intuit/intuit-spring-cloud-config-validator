@@ -7,10 +7,6 @@ Python script that validates Spring Cloud Config configuration repos by analyzin
 
 > *USER REFERENCE DOCUMENTATION*: For user reference and how-to, please go to the `Wiki page` of this repo clicking in the icon above. 
 
-![Validation with errors](https://github.intuit.com/storage/user/42/files/91ffb398-3702-11e7-944c-813b1072db5e)
-
-![GIthubValidator](https://github.intuit.com/services-configuration/spring-cloud-config-validator/wiki/images/enabled-spring-cloud-config-validator.png)
-
 # Requirements
 
 * Install Python 2.6+
@@ -36,8 +32,7 @@ pip 7.0.3 from /usr/local/lib/python2.7/dist-packages (python 2.7)
 You MUST install the required dependencies if you are running the script locally:
 
 ```
-$ curl --user "mdesales:******" \       
- https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-validator/master/requirements.txt > \
+$ curl https://github.com/raw/intuit/spring-cloud-config-validator/master/requirements.txt > \
  requirements.txt && pip install --user -r requirements.txt
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -61,18 +56,15 @@ At this point, you are ready to execute the script manually.
 
 You can execute the script directly in the current directory by using your LDAP credentials to the script.
 
-> $ curl --user "mdesales:******" \
-  https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config-properties-verification/master/validate-config-files.py \
+> $ curl https://github.com/raw/intuit/spring-cloud-config-validator/master/validate-config-files.py \
   | python
 
-* Change `--user "mdesales:*****"` with your `LDAP` credentials. 
 
 ```
 $ pwd
 /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification
 
-$ curl --user "mdesales:******" https://github.intuit.com/raw/servicesplatform-tools/spring-cloud-config\
-                                              -properties-verification/master/validate-config-files.py | python
+$ curl https://github.com/raw/intuit/spring-cloud-config-validator/master/validate-config-files.py | python
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  7946  100  7946    0     0  23442      0 --:--:-- --:--:-- --:--:-- 23439
@@ -110,17 +102,18 @@ $ validate-config-files.py /another/springcloud/config/directory
 
 The execution of the script succeeds and returns 0.
 
-![Validation without errors](https://github.intuit.com/storage/user/42/files/9701d376-3702-11e7-968b-a69ffb809b8b)
+![Validation without errors](https://github.com/storage/user/42/files/9701d376-3702-11e7-968b-a69ffb809b8b)
 
 ## Validation with errors
 
 The execution of the script fails and returns 1.
 
-![Validation with errors](https://github.intuit.com/storage/user/42/files/8df40bbe-3702-11e7-9d76-47c63599250e)
+![Validation with errors](https://github.com/storage/user/42/files/8df40bbe-3702-11e7-9d76-47c63599250e)
 
 # Github Enterprise Pre-receive
 
 You can follow the steps at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/ to include this script as a Pre-receive hook.
+The base image is located at https://github.com/marcellodesales/github-prereceive-base-docker.
 
 ## Github Pre-receive failure
 
@@ -128,11 +121,9 @@ The execution of a pre-receive hook in Github prevents users from pushing code w
 
 * Github Change on a local workspace
 
-![git change](https://github.intuit.com/storage/user/42/files/8afc1ac8-3702-11e7-9f7a-e8f8349616db)
 
 * Git push fails when errors are in the files
 
-![Github Pre-receive Failure](https://github.intuit.com/storage/user/42/files/21edf618-3703-11e7-86e6-bbc4f4e22555)
 
 # Development
 
@@ -287,62 +278,8 @@ this repo.
   * Build the Validator Image
 * Export the Docker environment as `tar.gz`
 * Test it locally.
-* Test it in https://github-dev.intuit.com
-* Open a ticket at the `GIT` Jira project for integration with PROD.
+* Test it in your Github Enterprise appliance https://github-dev.company.com
 
-## Build the Base Image
-
-```
-$ docker build -f Dockerfile.pre-receive -t github-enterprise-pre-receive-hook-base .
-Sending build context to Docker daemon  66.56kB
-Step 1/6 : FROM gliderlabs/alpine:3.3
-3.3: Pulling from gliderlabs/alpine
-ebf4d2c9f0ef: Pull complete
-a3ed95caeb02: Pull complete
-Digest: sha256:144c17928bb34f18179403d70384414ab25a289c0793af6620b67d3ee21cbcb5
-Status: Downloaded newer image for gliderlabs/alpine:3.3
- ---> eb784592c2f8
-Step 2/6 : MAINTAINER Marcello_deSales@intuit.com
- ---> Running in 87b33d48a18e
- ---> a07b3d5f70d9
-Removing intermediate container 87b33d48a18e
-Step 3/6 : RUN apk add --no-cache git openssh bash python py-pip &&   pip install --upgrade pip &&   ssh-keygen -A &&   sed -i "s/#AuthorizedKeysFile/AuthorizedKeysFile/g" /etc/ssh/sshd_config &&   adduser git -D -G root -h /home/git -s /bin/bash &&   passwd -d git &&   su git -c "mkdir /home/git/.ssh &&   ssh-keygen -t rsa -b 4096 -f /home/git/.ssh/id_rsa -P '' &&   mv /home/git/.ssh/id_rsa.pub /home/git/.ssh/authorized_keys &&   mkdir /home/git/test.git &&   git --bare init /home/git/test.git"
- ---> Running in 6538221061d0
-fetch http://alpine.gliderlabs.com/alpine/v3.3/main/x86_64/APKINDEX.tar.gz
-fetch http://alpine.gliderlabs.com/alpine/v3.3/community/x86_64/APKINDEX.tar.gz
-(1/22) Installing ncurses-terminfo-base (6.0-r6)
-(2/22) Installing ncurses-terminfo (6.0-r6)
-(3/22) Installing ncurses-libs (6.0-r6)
-(4/22) Installing readline (6.3.008-r4)
-(5/22) Installing bash (4.3.42-r6)
-Executing bash-4.3.42-r6.post-install
-(6/22) Installing openssl (1.0.2k-r0)
-(7/22) Installing ca-certificates (20161130-r0)
-(8/22) Installing libssh2 (1.6.0-r1)
-(9/22) Installing curl (7.52.1-r1)
-(10/22) Installing expat (2.1.1-r1)
-(11/22) Installing pcre (8.38-r1)
-(12/22) Installing git (2.6.6-r0)
-(13/22) Installing openssh-client (7.2_p2-r3)
-(14/22) Installing openssh-sftp-server (7.2_p2-r3)
-(15/22) Installing openssh (7.2_p2-r3)
-(16/22) Installing libbz2 (1.0.6-r4)
-(17/22) Installing libffi (3.2.1-r2)
-(18/22) Installing gdbm (1.11-r1)
-(19/22) Installing sqlite-libs (3.9.2-r0)
-(20/22) Installing python (2.7.12-r0)
-(21/22) Installing py-setuptools (18.8-r0)
-(22/22) Installing py-pip (7.1.2-r0)
-Executing busybox-1.24.2-r1.trigger
-Executing ca-certificates-20161130-r0.trigger
-OK: 81 MiB in 33 packages
-Collecting pip
-  Downloading pip-9.0.1-py2.py3-none-any.whl (1.3MB)
-Installing collected packages: pip
-  Found existing installation: pip 7.1.2
-    Uninstalling pip-7.1.2:
-      Successfully uninstalled pip-7.1.2
-Successfully installed pip-9.0.1
 ssh-keygen: generating new host keys: RSA DSA ECDSA ED25519
 Password for git changed by root
 Generating public/private rsa key pair.
@@ -383,7 +320,7 @@ Successfully tagged github-enterprise-pre-receive-hook-base:latest
 ## Build the Validator Image
 
 ```
-$ docker build -f Dockerfile.spring-cloud-config-validation -t springboot-config-verification .
+$ docker build -t springboot-config-verification .
 Sending build context to Docker daemon  594.4kB
 Step 1/4 : FROM github-enterprise-pre-receive-hook-base
  ---> c47928816175
@@ -417,31 +354,21 @@ $ ls -lah spring-cloud-config-validator-v1.1.0.tar.gz
 -rw-r--r--  1 mdesales  CORP\Domain Users    27M Jun  5 18:25 spring-cloud-config-validator-v1.1.0.tar.gz
 ```
 
-* Upload it to Box
-
-https://intuit.app.box.com/folder/11497191386
-
-And provide the download Link in the Jira ticket below.
-
-## Open GIT jira ticket
-
-* Open a ticket like https://jira.intuit.com/browse/GIT-778.
-* Add the download link to the Environment `tar.gz` file from box.
-* Talk to Eric Castle in Slack for the procedure.
+* Provide the `.tar.gz` file to your OPS Engineer to deploy it at the Github Enterprise.
 
 ## Test in Github Dev
 
 Once the environment has been uploaded to the dev environment, push the current script to it.
 
 ```
-$ git remote add dev git@github-dev.intuit.com:services-configuration/spring-cloud-config-validator.git
+$ git remote add dev git@github-dev.company.com:services-configuration/spring-cloud-config-validator.git
 
 $ git fetch dev
 remote: Counting objects: 51, done.
 remote: Compressing objects: 100% (19/19), done.
 remote: Total 51 (delta 34), reused 49 (delta 32), pack-reused 0
 Unpacking objects: 100% (51/51), done.
-From github-dev.intuit.com:services-configuration/spring-cloud-config-validator
+From github-dev.company.com:services-configuration/spring-cloud-config-validator
  * [new branch]      master     -> dev/master
 
 $ git fetch dev
@@ -449,7 +376,7 @@ remote: Counting objects: 51, done.
 remote: Compressing objects: 100% (19/19), done.
 remote: Total 51 (delta 34), reused 49 (delta 32), pack-reused 0
 Unpacking objects: 100% (51/51), done.
-From github-dev.intuit.com:services-configuration/spring-cloud-config-validator
+From github-dev.company.com:services-configuration/spring-cloud-config-validator
  * [new branch]      master     -> dev/master
 ```
 
@@ -460,12 +387,7 @@ test repos specified below.
 
 Now you can test the configuration in the Config Repos:
 
-* https://github-dev.intuit.com/MDESALES/config-repo
-* https://github-dev.intuit.com/MDESALES/spring-cloud-config-publisher-config
+* https://github-dev.company.com/MDESALES/config-repo
+* https://github-dev.company.com/MDESALES/spring-cloud-config-publisher-config
 
 > NOTE: Make sure the validator is enabled in those repos.
-
-## Prod environment
-
-Once you have verified that it works, ask Eric Castle to update the PROD environment
-with the new Docker image.
