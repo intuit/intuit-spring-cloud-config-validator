@@ -279,6 +279,7 @@ this repo.
 * Test it locally.
 * Test it in your Github Enterprise appliance https://github-dev.company.com
 
+```
 ssh-keygen: generating new host keys: RSA DSA ECDSA ED25519
 Password for git changed by root
 Generating public/private rsa key pair.
