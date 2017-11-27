@@ -280,13 +280,10 @@ open html_cov/index.html
 
 # Production Deployment
 
-You need to generate a Docker image with the environment of the Validator using
-the repo https://github.intuit.com/docker/github, along with the Dockerfile in 
-this repo.
-
-* Base the image following: https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-environment/#creating-a-pre-receive-hook-environment-using-docker.
-  * Build the base Image
-  * Build the Validator Image
+* Base image is at https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-base/
+ * Base the image following: https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-environment/#creating-a-pre-receive-hook-environment-using-docker.
+ * Build the base Image
+ * Build the Validator Image
 * Export the Docker environment as `tar.gz`
 * Test it locally.
 * Test it in your Github Enterprise appliance https://github-dev.company.com
