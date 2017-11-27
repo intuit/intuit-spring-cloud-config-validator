@@ -1,11 +1,10 @@
 # spring-cloud-config-validator
 
-Python script that validates Spring Cloud Config configuration repos by analyzing `.json`, `.yaml`, `.yml` and `.properties`.
+Github Enterprise pre-receive hook implementation for status validations: `Commits` and `Pull Requests` validated by running a python script that performs static validation of configuration repos used by Spring Cloud Config with `.json`, `.yaml`, `.yml` and `.properties` files.
 
-* Manual Validations
-* Github Pre-receive Hook Status Validations: Commits and Pull Requests  
+[![resolution](https://github.com/intuit/spring-cloud-config-validator/wiki/images/git-push-ui-validation-error.png "Spring Cloud Config Validator")](https://github.com/intuit/spring-cloud-config-validator/wiki)
 
-> *USER REFERENCE DOCUMENTATION*: For user reference and how-to, please go to the `Wiki page` of this repo clicking in the icon above. 
+Go to the [Wiki](https://github.com/intuit/spring-cloud-config-validator/wiki) for more information!
 
 # Requirements
 
