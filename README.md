@@ -367,8 +367,8 @@ c1a8b466d00d4d81ef043c85c12b91019e1859ce8342d2afb91d803a6fc20a3d
 ```
 
 $ docker export config-validator | gzip > spring-cloud-config-validator-latest.tar.gz
-$ ls -lah spring-cloud-config-validator-v1.1.0.tar.gz
--rw-r--r--  1 mdesales    27M Jun  5 18:25 spring-cloud-config-validator-v1.1.0.tar.gz
+$ ls -lah spring-cloud-config-validator-latest.tar.gz
+-rw-r--r--  1 mdesales    27M Jun  5 18:25 spring-cloud-config-validator-latest.tar.gz
 ```
 
 * Provide the `.tar.gz` file to your OPS Engineer to deploy it in your company's Github Enterprise.
