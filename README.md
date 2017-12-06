@@ -358,23 +358,24 @@ Successfully tagged springboot-config-verification:latest
 * Run a container
 
 ```
-$ docker create --name springboot-config-verification springboot-config-verification /bin/true
-d7e0a13505b4d01c91ce30b408d35910bcbd872a5ed24b0b2b8857769e591929
+$ docker create --name config-validator intuit/spring-cloud-config-validator /bin/true
+c1a8b466d00d4d81ef043c85c12b91019e1859ce8342d2afb91d803a6fc20a3d
 ```
 
 * Export the image as tar.gz
 
 ```
-$ docker export springboot-config-verification | gzip > spring-cloud-config-validator-v1.1.0.tar.gz
+
+$ docker export config-validator | gzip > spring-cloud-config-validator-latest.tar.gz
 $ ls -lah spring-cloud-config-validator-v1.1.0.tar.gz
--rw-r--r--  1 mdesales  CORP\Domain Users    27M Jun  5 18:25 spring-cloud-config-validator-v1.1.0.tar.gz
+-rw-r--r--  1 mdesales    27M Jun  5 18:25 spring-cloud-config-validator-v1.1.0.tar.gz
 ```
 
-* Provide the `.tar.gz` file to your OPS Engineer to deploy it at the Github Enterprise.
+* Provide the `.tar.gz` file to your OPS Engineer to deploy it in your company's Github Enterprise.
 
 ## Test in Github Dev
 
-Once the environment has been uploaded to the dev environment, push the current script to it.
+Once the environment has been uploaded to the dev environment, push the current script to it. Github Pre-Receive hook will require your OPS Engineer to specify the scripts to be placed inside the volume of the base Image above.
 
 ```
 $ git remote add dev git@github-dev.company.com:services-configuration/spring-cloud-config-validator.git
