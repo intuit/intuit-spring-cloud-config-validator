@@ -1,24 +1,24 @@
-# spring-cloud-config-validator
+# Intuit Spring Cloud Config Validator
 
 Github Enterprise pre-receive hook implementation for status validations: `Commits` and `Pull Requests` validated by running a python script that performs static validation of configuration repos used by Spring Cloud Config with `.json`, `.yaml`, `.yml` and `.properties` files. It implements the basic Pre-Receive hook steps detailed at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/.
 
-[![resolution](https://github.com/intuit/spring-cloud-config-validator/wiki/images/git-push-ui-validation-error.png "Spring Cloud Config Validator")](https://github.com/intuit/spring-cloud-config-validator/wiki)
+[![resolution](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/images/git-push-ui-validation-error.png "Spring Cloud Config Validator")](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki)
 
-Go to the [Wiki](https://github.com/intuit/spring-cloud-config-validator/wiki) for more information!
+Go to the [Wiki](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki) for more information!
 
 # Setup
 
 Go to the section for Production deployment as described below.
 
-After your Github Enterprise is setup, make sure to follow the steps at the [Setup Config Repo Pre-receive Hook](https://github.com/intuit/spring-cloud-config-validator/wiki/Setup-Config-Repo-Pre-receive-Hook) section.
+After your Github Enterprise is setup, make sure to follow the steps at the [Setup Config Repo Pre-receive Hook](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/Setup-Config-Repo-Pre-receive-Hook) section.
 
 # Validations
 
 This is useful for teams using Spring Cloud Config repos and wants to be rest-assured that the configuration changes pushed to the repo won't break anything!
 
-* [Validate Local Commits](https://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Local-Commits)
-* [Validate Online Commits](https://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Online-Commits)
-* [Validate Pull Requests](https://github.com/intuit/spring-cloud-config-validator/wiki/Validate-Files-In-Pull-Request)
+* [Validate Local Commits](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/Validate-Local-Commits)
+* [Validate Online Commits](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/Validate-Online-Commits)
+* [Validate Pull Requests](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/Validate-Files-In-Pull-Request)
 
 # Development
 
@@ -45,7 +45,7 @@ pip 7.0.3 from /usr/local/lib/python2.7/dist-packages (python 2.7)
 You MUST install the required dependencies if you are running the script locally:
 
 ```
-$ curl https://github.com/raw/intuit/spring-cloud-config-validator/master/requirements.txt > \
+$ curl https://github.com/raw/intuit/intuit-spring-cloud-config-validator/master/requirements.txt > \
  requirements.txt && pip install --user -r requirements.txt
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -69,35 +69,35 @@ At this point, you are ready to execute the script manually.
 
 You can execute the script directly in the current directory by using your LDAP credentials to the script.
 
-> $ curl https://github.com/raw/intuit/spring-cloud-config-validator/master/validate-config-files.py \
+> $ curl https://github.com/raw/intuit/intuit-spring-cloud-config-validator/master/validate-config-files.py \
   | python
 
 
 ```
 $ pwd
-/home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification
+/home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification
 
-$ curl https://github.com/raw/intuit/spring-cloud-config-validator/master/validate-config-files.py | python
+$ curl https://github.com/raw/intuit/intuit-spring-cloud-config-validator/master/validate-config-files.py | python
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  7946  100  7946    0     0  23442      0 --:--:-- --:--:-- --:--:-- 23439
 ##################################################
 ###### Intuit Spring Cloud Config Validator ######
 ##################################################
-=> Validating directory /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification
-✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-ios_8.0.yml 
+=> Validating directory /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification
+✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-ios_8.0.yml 
     is NOT valid: expected '<document start>', but found '<scalar>' 
-    in "/home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-ios_8.0.yml", line 1, column 5
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-ios.yml is valid!
-✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/.matrix-android.json 
+    in "/home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-ios_8.0.yml", line 1, column 5
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-ios.yml is valid!
+✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/.matrix-android.json 
     is NOT valid: No JSON object could be decoded
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-android_N.yml is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-2.7.yml is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/.matrix-ios.json is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-android.yml is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu-android_6.0.yml is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/ttu.yaml is valid!
-✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/spring-cloud-config-properties-verification/application.properties 
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-android_N.yml is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-2.7.yml is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/.matrix-ios.json is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-android.yml is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-android_6.0.yml is valid!
+✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu.yaml is valid!
+✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/application.properties 
     is NOT valid: local variable 'wspacere' referenced before assignment
 ```
 
@@ -207,14 +207,14 @@ OK
 Just update the data docker container with the new value.
 
 ```
-~/dev/github/intuit/servicesplatform-tools/spring-cloud-config-validator on  feature/make-validator-oop! ⌚ 14:25:46
+~/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-validator on  feature/make-validator-oop! ⌚ 14:25:46
 $ docker cp validate_config_files.py data:/home/git/test.git/hooks/pre-receive
 ```
 
 Then, execute the command to push new commits to the test origin server.
 
 ```
-~/dev/github/intuit/servicesplatform-tools/spring-cloud-config-validator/ttu-config on  master ⌚ 14:25:55
+~/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-validator/ttu-config on  master ⌚ 14:25:55
 $ GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 52311 -i ../id_rsa" git push -u test master
 Warning: Permanently added '[192.168.154.132]:52311' (ECDSA) to the list of known hosts.
 Counting objects: 214, done.
@@ -223,7 +223,7 @@ Compressing objects: 100% (100/100), done.
 Writing objects: 100% (214/214), 21.50 KiB | 0 bytes/s, done.
 Total 214 (delta 127), reused 184 (delta 109)
 remote: ##################################################
-remote: ###### Spring Cloud Config Validator 1.0.0 #######
+remote: ###### Intuit Spring Cloud Config Validator 1.0.0 #######
 remote: ##################################################
 remote: Processing base=0000000000000000000000000000000000000000 commit=6ff408ac89564c994925c46847d775fff940caa3 ref=refs/heads/master
 remote: => Validating SHA 6ff408ac89564c994925c46847d775fff940caa3
@@ -284,7 +284,7 @@ open html_cov/index.html
 
 * Base image is at the following:
 
-[![resolution](http://dockeri.co/image/intuit/spring-cloud-config-validator "Spring Cloud Config Validator Docker Image")](https://hub.docker.com/r/intuit/spring-cloud-config-validator/)
+[![resolution](http://dockeri.co/image/intuit/intuit-spring-cloud-config-validator "Intuit Spring Cloud Config Validator Docker Image")](https://hub.docker.com/r/intuit/intuit-spring-cloud-config-validator/)
 
 * The image was built using the steps at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-environment/#creating-a-pre-receive-hook-environment-using-docker.
 
@@ -358,7 +358,7 @@ Successfully tagged springboot-config-verification:latest
 * Run a container
 
 ```
-$ docker create --name config-validator intuit/spring-cloud-config-validator /bin/true
+$ docker create --name config-validator intuit/intuit-spring-cloud-config-validator /bin/true
 c1a8b466d00d4d81ef043c85c12b91019e1859ce8342d2afb91d803a6fc20a3d
 ```
 
@@ -366,9 +366,9 @@ c1a8b466d00d4d81ef043c85c12b91019e1859ce8342d2afb91d803a6fc20a3d
 
 ```
 
-$ docker export config-validator | gzip > spring-cloud-config-validator-latest.tar.gz
-$ ls -lah spring-cloud-config-validator-latest.tar.gz
--rw-r--r--  1 mdesales    27M Jun  5 18:25 spring-cloud-config-validator-latest.tar.gz
+$ docker export config-validator | gzip > intuit-spring-cloud-config-validator-latest.tar.gz
+$ ls -lah intuit-spring-cloud-config-validator-latest.tar.gz
+-rw-r--r--  1 mdesales    27M Jun  5 18:25 intuit-spring-cloud-config-validator-latest.tar.gz
 ```
 
 * Provide the `.tar.gz` file to your OPS Engineer to deploy it in your company's Github Enterprise.
@@ -378,14 +378,14 @@ $ ls -lah spring-cloud-config-validator-latest.tar.gz
 Once the environment has been uploaded to the dev environment, push the current script to it. Github Pre-Receive hook will require your OPS Engineer to specify the scripts to be placed inside the volume of the base Image above.
 
 ```
-$ git remote add dev git@github-dev.company.com:services-configuration/spring-cloud-config-validator.git
+$ git remote add dev git@github-dev.company.com:services-configuration/intuit-spring-cloud-config-validator.git
 
 $ git fetch dev
 remote: Counting objects: 51, done.
 remote: Compressing objects: 100% (19/19), done.
 remote: Total 51 (delta 34), reused 49 (delta 32), pack-reused 0
 Unpacking objects: 100% (51/51), done.
-From github-dev.company.com:services-configuration/spring-cloud-config-validator
+From github-dev.company.com:services-configuration/intuit-spring-cloud-config-validator
  * [new branch]      master     -> dev/master
 
 $ git fetch dev
@@ -393,7 +393,7 @@ remote: Counting objects: 51, done.
 remote: Compressing objects: 100% (19/19), done.
 remote: Total 51 (delta 34), reused 49 (delta 32), pack-reused 0
 Unpacking objects: 100% (51/51), done.
-From github-dev.company.com:services-configuration/spring-cloud-config-validator
+From github-dev.company.com:services-configuration/intuit-spring-cloud-config-validator
  * [new branch]      master     -> dev/master
 ```
 
@@ -405,6 +405,6 @@ test repos specified below.
 Now you can test the configuration in the Config Repos:
 
 * https://github-dev.company.com/MDESALES/config-repo
-* https://github-dev.company.com/MDESALES/spring-cloud-config-publisher-config
+* https://github-dev.company.com/MDESALES/intuit-spring-cloud-config-publisher-config
 
 > NOTE: Make sure the validator is enabled in those repos.
