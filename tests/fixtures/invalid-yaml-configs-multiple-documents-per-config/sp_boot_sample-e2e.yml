@@ -1,11 +1,6 @@
      sodksokskd:
 
 
-             dsdosdokd
-info:
-  description: 'Properties specific to "e2e" environment; also includes any settings for "aws" profile in e2e, if specified.'
-
-jsk:
   service:
     info:
       env: e2e
@@ -14,10 +9,8 @@ jsk:
       dependencies:
         app:
           0:
-            url: 'https://access-e2e.platform.intuit.net/health/full'
-            name: IUS
     lastmile:
-      audience: 'https://sp-s2-e2e-qydc.platform.intuit.net,https://sp-s2-e2e-lvdc.platform.intuit.net'
+      audience: 'https://sp-s2t'
 
 ---
 
@@ -25,19 +18,4 @@ spring:
   profiles: aws
 
 jsk:
-  servlet:
-    diag: ## formerly sp_diagnostics:
-      dependencies:
-        app:
-          0:
-            url: 'https://access-e2e.platform.intuit.com/health/full'
-            name: IUS
-    lastmile:
-      audience: 'https://sp-boot-sample-e2e.platform.intuit.com'
-
-security:
-  intuit:
-    accessServiceEndpoint: 'https://access-e2e.platform.intuit.com/v2/tickets'
-    proxyhost: egress-proxy
-    proxyport: 3128
 
