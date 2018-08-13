@@ -31,16 +31,6 @@ info:
 
 ## What is now in jsk-core-props' ServiceInfoProperties bean, used throughout JSK:
 
-jsk:
-  service:
-    info:
-      name: Spring Boot Reference Service
-      acronym: TCRS
-      appId: Intuit.platform.servicesplatform.tomcatreferenceservice
-      assetAlias: Intuit.platform.servicesplatform.tomcatreferenceservice
-      # env: jsk.service.info.env must be set per profile
-
-
 # old naming not yet updated:
 sp_service_swagger_api_version: 2.0
 
@@ -51,16 +41,6 @@ sp_service_swagger_api_version: 2.0
 
 # Some of these values must be overridden in specific environments
 
-jsk:
-  servlet:
-    lastmile:
-      enabled: true   # only disabled in the dev environment
-      algorithm: "RS256"
-      audience: "https://sp-s2-"
-      truststorePath: "/usr/local/tomcat/conf/Intuit.cto.gateway.preProdTruststore.jks"
-      truststorePassword: "changeit123"
-      ignorePaths: "/errors, /ping, /health, /diag, /swagger.json, /swagger.yaml, /api-docs"
-
 ---
 
 ## Healthcheck now has a property to determine whether you are using the
@@ -69,12 +49,6 @@ jsk:
 ## See the classes in the "autoconfig" package of jsk-servlet-health.
 ## dirToWatch could use ${catalina.base} if using multitenancy.
 
-jsk:
-  servlet:
-    healthcheck:
-      kind: filechecking
-      dirToWatch: '${catalina.home:.}/conf/_health'
-      offlineFilename: set-offline
 
 ---
 
@@ -86,29 +60,7 @@ jsk:
 # In jsk-servlet-logging-utils, look at class LoggingProperties.
 # Retired (never implemented): log4j.mdc.json-format.software, .hostname, .merchantaccount
 # Retired: log4j.mdc.json-format.type.log-incoming-request-event, .log-outgoing-request-event
-# Renamed: log4j.mdc.json-format.request-info -> jsk.servlet.logging.filter.formatRequestInfo
-
-jsk:
-  servlet:
-    diag:
-      customHostMetadata: customHostMetadataBean
-    logging:
-      utils:
-        formatType: NameValue  # "JSON" is the other option
-        stackTraceJsonFormat: ',"exception":[%s]'
-        stackTracePruningEnabled: true
-        stacktracePruningMaxLines: 5
-        mdcIntuitTidJsonFormat: ',"intuit_tid":"%s"'
-      filter:
-        #formatRequestInfo:
-        includeRequestInfo: false
-        includeResponseInfo: false
-        #mdcTypeRequestEvent:
-        #preformatCustomFields:
-        #svcLabel:
-        typeDefault: '"@type":"log:GenericEvent",'
-        enabled: true
-
+# Renamed: log4j.mdc.json-format.request-info -> js
 
 #disable advertising tomcat server
 server:
@@ -127,14 +79,6 @@ spring:
   activemq:
     broker-url:
 
-security:
-  filter-order: 10
-  ignored: /errors/**, /ping, /health/**, /swagger.json, /swagger.yaml
-  basic:
-    enabled: false
-  intuit:
-    # appId: should ONLY be defined locally, for consistency (one-definition rule)
-    accessServiceEndpoint: https://access-e2e.platform.intuit.net/v2/tickets
 
 ---
 
