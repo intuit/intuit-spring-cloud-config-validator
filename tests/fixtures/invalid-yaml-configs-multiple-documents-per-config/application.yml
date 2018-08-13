@@ -52,16 +52,6 @@ sp_service_swagger_api_version: 2.0
 
 # Some of these values must be overridden in specific environments
 
-jsk:
-  servlet:
-    lastmile:
-      enabled: true   # only disabled in the dev environment
-      algorithm: "RS256"
-      audience: "https://sp-s2-"
-      truststorePath: "/usr/local/tomcat/conf/Intuit.cto.gateway.preProdTruststore.jks"
-      truststorePassword: "changeit123"
-      ignorePaths: "/errors, /ping, /health, /diag, /swagger.json, /swagger.yaml, /api-docs"
-
 ---
 
 ## Healthcheck now has a property to determine whether you are using the
@@ -78,37 +68,6 @@ jsk:
       offlineFilename: set-offline
 
 ---
-
-## And now the long list of properties for the CommonServiceLogFilter
-## in jsk-servlet-logging-filter (see also jsk-servlet-logging-utils).
-## (Note that this module is due for a lot of rework, so don't obsess with
-## the details here.)
-
-# In jsk-servlet-logging-utils, look at class LoggingProperties.
-# Retired (never implemented): log4j.mdc.json-format.software, .hostname, .merchantaccount
-# Retired: log4j.mdc.json-format.type.log-incoming-request-event, .log-outgoing-request-event
-# Renamed: log4j.mdc.json-format.request-info -> jsk.servlet.logging.filter.formatRequestInfo
-
-jsk:
-  servlet:
-    diag:
-      customHostMetadata: customHostMetadataBean
-    logging:
-      utils:
-        formatType: NameValue  # "JSON" is the other option
-        stackTraceJsonFormat: ',"exception":[%s]'
-        stackTracePruningEnabled: true
-        stacktracePruningMaxLines: 5
-        mdcIntuitTidJsonFormat: ',"intuit_tid":"%s"'
-      filter:
-        #formatRequestInfo:
-        includeRequestInfo: false
-        includeResponseInfo: false
-        #mdcTypeRequestEvent:
-        #preformatCustomFields:
-        #svcLabel:
-        typeDefault: '"@type":"log:GenericEvent",'
-        enabled: true
 
 
 #disable advertising tomcat server
@@ -130,13 +89,6 @@ spring:
 
 security:
   filter-order: 10
-  ignored: /errors/**, /ping, /health/**, /swagger.json, /swagger.yaml
-  basic:
-    enabled: false
-  intuit:
-    # appId: should ONLY be defined locally, for consistency (one-definition rule)
-    accessServiceEndpoint: https://access-e2e.platform.intuit.net/v2/tickets
-
 ---
 
 #example to disable  diag
@@ -146,11 +98,3 @@ security:
 #      enabled: false
 
 
----
-# sampleproperties
-jsk:
-  spbootsample:
-    properties:
-      p1: goodbye
-      p2: goodbye
-      p3: again
