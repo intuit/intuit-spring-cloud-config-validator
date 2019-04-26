@@ -14,7 +14,7 @@ import errno
 from pyjavaproperties import Properties
 
 # Verion of this script, printed in the output
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 class ExecutionContext:
   """Decider of what to execute"""
