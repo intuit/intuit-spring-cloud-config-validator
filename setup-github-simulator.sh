@@ -33,7 +33,7 @@ echo "${green}* docker run --name data ${DOCKER_IMAGE} /bin/true${yellow}"
 echo ""
 docker stop data || true
 docker rm data || true
-docker run --name data intuit/intuit-spring-cloud-config-validator /bin/true
+docker run --name data ${DOCKER_IMAGE} /bin/true
 #echo "Copy the current validator script to the data container If needed for testing without rebuilding
 #docker cp validate_config_files.py data:/home/git/test.git/hooks/pre-receive
 echo ""
