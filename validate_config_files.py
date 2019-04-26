@@ -3,7 +3,7 @@
 import sys
 import subprocess
 import os
-import glob
+import glob2
 import json
 import yaml
 
@@ -184,7 +184,7 @@ class Validator:
   def listConfigFiles(dirPath, extension):
     """Lists all the config files in a given directory with the given extension"""
 
-    return glob.glob(os.path.join(dirPath, extension))
+    return glob2.glob(os.path.join(dirPath, extension))
 
   # Saves the given content in the file path from the contextDir
   @staticmethod
@@ -251,7 +251,8 @@ class Validator:
     """Lists all the configuration files in a given directory"""
 
     # Valid configuration files
-    configMatches = ["*.json", "*.yaml", "*.yml", "*.properties", ".*matrix*.json"]
+    configMatches = ["**/*.json", "**/*.yaml", "**/*.yml", "**/*.properties"]
+    print "Filtering Spring Cloud Config Server's files: ", configMatches
 
     # Get all the types config files based on the matches.
     allConfigs = []
