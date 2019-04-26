@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+
+  intuit-spring-cloud-config-validator:
+    image: intuit/intuit-spring-cloud-config-validator:1.1.1
+    build: .
