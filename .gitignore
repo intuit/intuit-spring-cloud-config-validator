@@ -2,3 +2,4 @@
 tests/*.pyc
 htmlcov/
 .coverage
+.id_rsa_from_github_simulator_server
