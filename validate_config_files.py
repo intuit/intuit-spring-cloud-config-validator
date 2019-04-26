@@ -3,7 +3,7 @@
 import sys
 import subprocess
 import os
-import glob
+import glob2
 import json
 import yaml
 
@@ -184,7 +184,7 @@ class Validator:
   def listConfigFiles(dirPath, extension):
     """Lists all the config files in a given directory with the given extension"""
 
-    return glob.glob(os.path.join(dirPath, extension))
+    return glob2.glob(os.path.join(dirPath, extension))
 
   # Saves the given content in the file path from the contextDir
   @staticmethod
