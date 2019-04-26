@@ -163,7 +163,8 @@ class ConfigFileValidator:
   def isYamlFileValid(filePath):
     """Verifies if a given yaml file is valid"""
 
-    rules = yaml.safe_load("key-duplicates: enable\ndocument-start: disable\ntrailing-spaces: disable\nline-length: disable\ncomments-indentation: disable\ncomments: disable\nnew-line-at-end-of-file: disable\nempty-lines: disable\nindentation: disable")
+    # Rules from https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.brackets
+    rules = yaml.safe_load("brackets: {min-spaces-inside: -1, max-spaces-inside: -1}\nkey-duplicates: enable\ndocument-start: disable\ntrailing-spaces: disable\nline-length: disable\ncomments-indentation: disable\ncomments: disable\nnew-line-at-end-of-file: disable\nempty-lines: disable\nindentation: disable")
     conf = {'extends': 'default', 'rules': rules}
     yamlLintConfig = YamlLintConfig(yaml.safe_dump(conf))
 
