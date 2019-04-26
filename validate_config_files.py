@@ -239,6 +239,22 @@ class Validator:
       content = GitRepo.openCommitFileContent(fileName, head)
       # print content
 
+      # fileName is actually the partial fileName like dir/file.ext
+      # We need to create the dirs relative to the file
+      if len(fileName.split("/")) > 1:
+          # Given "idps/idps-config.sh", idps-config.sh
+          fileNameToProcess = fileName.split("/")[-1:]
+          # Given "idps/idps-config.sh", idps, the first elements,
+          dirNameToProcess = contextDir + "/" + "/".join(fileName.split("/")[:-1])
+
+          # When there's a directory, create it before
+          if not os.path.exists(dirNameToProcess):
+            try:
+              os.makedirs(dirNameToProcess)
+            except OSError as exc: # Guard against race condition
+              if exc.errno != errno.EEXIST:
+                raise
+
       # Save the contents in the context directory
       filePath = Validator.saveFileContent(fileName, content, contextDir)
       # print "File saved at " + filePath
