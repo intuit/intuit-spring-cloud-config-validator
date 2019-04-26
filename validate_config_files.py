@@ -314,7 +314,7 @@ class ShellExecution:
 
     # Starting the process
     print "#####################################################"
-    print "### Intuit Spring Cloud Config Validator " + VERSION + " ####"
+    print "#### Intuit Spring Cloud Config Validator " + VERSION + " #####"
     print "#####################################################"
 
     #for key in os.environ.keys():
