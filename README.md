@@ -2,9 +2,17 @@
 
 Github Enterprise pre-receive hook implementation for status validations: `Commits` and `Pull Requests` validated by running a python script that performs static validation of configuration repos used by Spring Cloud Config with `.json`, `.yaml`, `.yml` and `.properties` files. It implements the basic Pre-Receive hook steps detailed at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/.
 
-[![resolution](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/images/git-push-ui-validation-error.png "Spring Cloud Config Validator")](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki)
+<a link="https://github.com/intuit/intuit-spring-cloud-config-validator/wiki"><img width="1022" alt="pushing-error" src="https://user-images.githubusercontent.com/131457/56830365-00e62800-681b-11e9-883c-0a3fdd259b5f.png"></a>
 
 Go to the [Wiki](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki) for more information!
+
+* Spring Cloud Config Validator Docker Image (Python)
+
+[![resolution](http://dockeri.co/image/intuit/intuit-spring-cloud-config-validator "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/intuit/intuit-spring-cloud-config-validator/)
+
+* Python Base Image
+
+[![resolution](http://dockeri.co/image/marcellodesales/github-enterprise-prereceive-hook-base "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-bas/)
 
 # Setup
 
