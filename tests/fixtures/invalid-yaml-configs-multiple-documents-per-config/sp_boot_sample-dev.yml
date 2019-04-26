@@ -1,4 +1,3 @@
-
 info:
   description: 'Properties specific to "dev" environment; also includes any settings for "aws" profile in dev, if specified.'
 lloloplolp
