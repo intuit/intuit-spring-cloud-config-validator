@@ -20,123 +20,79 @@ This is useful for teams using Spring Cloud Config repos and wants to be rest-as
 * [Validate Online Commits](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/Validate-Online-Commits)
 * [Validate Pull Requests](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/Validate-Files-In-Pull-Request)
 
-# Development
+# Setup
 
-* Install Python 2.6+
-* Install Pip https://pip.pypa.io/en/stable/installing/
- * Mac `sudo easy_install pip` 
+* Docker Engine: latest is recommended with `multi-stage` support
+* Docker Compose: latest is recommended
 
-```
-$ curl --silent --show-error --retry 5 https://bootstrap.pypa.io/get-pip.py | sudo python
-```
+1. Create a Git server with the pre-receive hook `validate_config_files.py`.
+2. Using `test.sh` test a given github config repo locally
 
-Make sure you have the required versions:
+## Create Git Server
 
-```
-$ python --version
-Python 2.7.10
+* Run the command `./setup-github-simulator.sh`
 
-$ pip --version
-pip 7.0.3 from /usr/local/lib/python2.7/dist-packages (python 2.7)
-```
+[![asciicast](https://asciinema.org/a/q8Y735uZ48fktw6rmlDXTY3sP.svg)](https://asciinema.org/a/q8Y735uZ48fktw6rmlDXTY3sP)
 
-## Script Dependencies
+* The output shows the full command to run with `test.sh`
 
-You MUST install the required dependencies if you are running the script locally:
+## Test Local Config Repo
 
-```
-$ curl https://github.com/raw/intuit/intuit-spring-cloud-config-validator/master/requirements.txt > \
- requirements.txt && pip install --user -r requirements.txt
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    24  100    24    0     0     30      0 --:--:-- --:--:-- --:--:--    30
-Collecting pyyaml (from -r requirements.txt (line 1))
-Collecting pyjavaproperties (from -r requirements.txt (line 2))
-Installing collected packages: pyyaml, pyjavaproperties
-Successfully installed pyjavaproperties pyyaml
-```
+* Change to the directory of your config repo
+* Copy `test.sh` into your config repo
+* Execute the command displayed
+  * Branch `master` is always pushed
+  * If the parameter `BRANCH=` is specified, the script will force `git push`
 
-At this point, you are ready to execute the script manually.
+[![asciicast](https://asciinema.org/a/PhuWp0BZg39Bu60UgixBa7xAM.svg)](https://asciinema.org/a/PhuWp0BZg39Bu60UgixBa7xAM)
 
-# Usage
+## Test Local Config Error
 
-* **Current Directory Validation**: Download and execute for a given directory using `curl`.
-* **Multiple Directory Validation**: Download the script `validate-config-files.py` and execute it for a given directory path.
-* **Exit Values**: The script returns `0 for success` or `1 for errors`.
-* **Report**: Gives hints about the errors
+* Making changes and attempting to push errors will fail the push
 
-## Execute current Directory
-
-You can execute the script directly in the current directory by using your LDAP credentials to the script.
-
-> $ curl https://github.com/raw/intuit/intuit-spring-cloud-config-validator/master/validate-config-files.py \
-  | python
-
-
-```
-$ pwd
-/home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification
-
-$ curl https://github.com/raw/intuit/intuit-spring-cloud-config-validator/master/validate-config-files.py | python
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100  7946  100  7946    0     0  23442      0 --:--:-- --:--:-- --:--:-- 23439
-##################################################
-###### Intuit Spring Cloud Config Validator ######
-##################################################
-=> Validating directory /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification
-✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-ios_8.0.yml 
-    is NOT valid: expected '<document start>', but found '<scalar>' 
-    in "/home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-ios_8.0.yml", line 1, column 5
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-ios.yml is valid!
-✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/.matrix-android.json 
-    is NOT valid: No JSON object could be decoded
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-android_N.yml is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-2.7.yml is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/.matrix-ios.json is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-android.yml is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu-android_6.0.yml is valid!
-✔ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/ttu.yaml is valid!
-✘ File /home/mdesales/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-properties-verification/application.properties 
-    is NOT valid: local variable 'wspacere' referenced before assignment
-```
-
-## Execute for another Directory
-
-You need to download the script and execute it, passing the parameter.
-
-```
-$ validate-config-files.py /another/springcloud/config/directory
-```
-
-# Examples
-
-## Validation without errors
-
-The execution of the script succeeds and returns 0.
-
-![Validation without errors](https://github.com/storage/user/42/files/9701d376-3702-11e7-968b-a69ffb809b8b)
-
-## Validation with errors
-
-The execution of the script fails and returns 1.
-
-![Validation with errors](https://github.com/storage/user/42/files/8df40bbe-3702-11e7-9d76-47c63599250e)
+[![asciicast](https://asciinema.org/a/eqBwPS6Cxsv7RvOMn4dTwZ4u2.svg)](https://asciinema.org/a/eqBwPS6Cxsv7RvOMn4dTwZ4u2)
 
 # Github Enterprise Pre-receive
 
-You can follow the steps at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/ to include this script as a Pre-receive hook.
-The base image is located at https://github.com/marcellodesales/github-prereceive-base-docker.
+* Based on the steps from https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/, we have created a `package.sh` script that creates the `tar.gz` file to Upload in your Github Enterprise installation.
+  * This is known as the `Environment` in Github Enterprise Terms
+  * Your SRE will also get a clone of this repo to be installed locally, where it will specify the script `validate_config_files.py` as the pre-receive hook to use.
 
-## Github Pre-receive failure
+The original base image with Git server with Python is located at https://github.com/marcellodesales/github-prereceive-base-docker.
 
-The execution of a pre-receive hook in Github prevents users from pushing code with errors. The validate script developed here can prevent users from publishing changes in Spring Cloud Config repos that can break the server. The example below shows the validation. 
+## Create .tar.gz Package
 
-* Github Change on a local workspace
+* Just execute `package.sh` from this repo
+* The resulting `tar.gz` file will be displayed
+
+[![asciicast](https://asciinema.org/a/EaVR7aRXfmkgPL3iIt5DPFB1c.svg)](https://asciinema.org/a/EaVR7aRXfmkgPL3iIt5DPFB1c)
 
 
-* Git push fails when errors are in the files
+## Test in Github Dev
 
+Once the environment has been uploaded to the dev environment, push the current script to it. Github Pre-Receive hook will require your OPS Engineer to specify the scripts to be placed inside the volume of the base Image above.
+
+1. Push the Config Repo to Github
+2. Enable the Hook in Settings
+3. Attempt to push config with errors
+
+### Enable The Hook in Settings
+
+* After pushing this repo, go to the Settings section of the repo and `Hooks`
+
+<img width="1064" alt="setup-repo" src="https://user-images.githubusercontent.com/131457/56830371-05124580-681b-11e9-9624-b6923d049f44.png">
+
+### Attempt to push Config with Errors
+
+* Just then through the UI try to push errors
+
+<img width="1022" alt="pushing-error" src="https://user-images.githubusercontent.com/131457/56830365-00e62800-681b-11e9-883c-0a3fdd259b5f.png">
+
+### Attempt to push errors from console
+
+* Just clone the repo and try to push errors
+
+[![asciicast](https://asciinema.org/a/9rnFNiv2U8sg56V2nXHAuRNR6.svg)](https://asciinema.org/a/9rnFNiv2U8sg56V2nXHAuRNR6)
 
 # Development
 
@@ -145,12 +101,130 @@ Everything you need to develop. Here are some requirements and utilities.
 * Python 2.7+: We can use the discover mode for all tests on this version
  * https://docs.python.org/2/library/unittest.html#test-discovery
 
+* The Dockerfile build will automatically execute the tests
 
-## Running all test cases suite
+## Running tests in Docker
+
+```console
+$ docker build --no-cache --target tests -t validator-tests .
+Sending build context to Docker daemon  34.97MB
+Step 1/7 : FROM marcellodesales/github-enterprise-prereceive-hook-base as tests
+ ---> ef045e4c014b
+Step 2/7 : RUN apk add --no-cache py-pip &&     pip2 install coverage
+ ---> Running in b47bad7e7031
+fetch http://alpine.gliderlabs.com/alpine/v3.3/main/x86_64/APKINDEX.tar.gz
+fetch http://alpine.gliderlabs.com/alpine/v3.3/community/x86_64/APKINDEX.tar.gz
+OK: 82 MiB in 33 packages
+Collecting coverage
+  Downloading https://files.pythonhosted.org/packages/82/70/2280b5b29a0352519bb95ab0ef1ea942d40466ca71c53a2085bdeff7b0eb/coverage-4.5.3.tar.gz (384kB)
+Installing collected packages: coverage
+  Running setup.py install for coverage: started
+    Running setup.py install for coverage: finished with status 'done'
+Successfully installed coverage-4.5.3
+You are using pip version 9.0.1, however version 19.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+Removing intermediate container b47bad7e7031
+ ---> 7b32fa6f90db
+Step 3/7 : COPY requirements.txt /build/requirements.txt
+ ---> d20e1f359760
+Step 4/7 : RUN pip2 install -r /build/requirements.txt
+ ---> Running in ff212a50429f
+Collecting pyyaml==5.1 (from -r /build/requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/9f/2c/9417b5c774792634834e730932745bc09a7d36754ca00acf1ccd1ac2594d/PyYAML-5.1.tar.gz (274kB)
+Collecting yamllint==1.15.0 (from -r /build/requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/0a/0d/52cbd670156058329321451432dedb02885594c1ae91252574fe8eac61e5/yamllint-1.15.0-py2.py3-none-any.whl (44kB)
+Collecting pyjavaproperties==0.7 (from -r /build/requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/0a/5a/af92ac36c3e9b8c684fddfbdcf39ffe7d4b39439bc9b60fd88b2c3bfd244/pyjavaproperties-0.7.tar.gz
+Collecting glob2==0.6 (from -r /build/requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/f0/e8/970c7a031b2d7f9a21fefaa8c9d5c38001f8f25055f4ffcb32b3dbecd1ea/glob2-0.6.tar.gz
+Collecting pathspec>=0.5.3 (from yamllint==1.15.0->-r /build/requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/84/2a/bfee636b1e2f7d6e30dd74f49201ccfa5c3cf322d44929ecc6c137c486c5/pathspec-0.5.9.tar.gz
+Installing collected packages: pyyaml, pathspec, yamllint, pyjavaproperties, glob2
+  Running setup.py install for pyyaml: started
+    Running setup.py install for pyyaml: finished with status 'done'
+  Running setup.py install for pathspec: started
+    Running setup.py install for pathspec: finished with status 'done'
+  Running setup.py install for pyjavaproperties: started
+    Running setup.py install for pyjavaproperties: finished with status 'done'
+  Running setup.py install for glob2: started
+    Running setup.py install for glob2: finished with status 'done'
+Successfully installed glob2-0.6 pathspec-0.5.9 pyjavaproperties-0.7 pyyaml-5.1 yamllint-1.15.0
+You are using pip version 9.0.1, however version 19.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+Removing intermediate container ff212a50429f
+ ---> 45e483ee306e
+Step 5/7 : COPY ./tests /build/tests
+ ---> b2e1d253ce75
+Step 6/7 : COPY ./validate_config_files.py /build
+ ---> 76b91e21c8ae
+Step 7/7 : RUN coverage run -m unittest discover -v /build/tests
+ ---> Running in 209c14f497a8
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+test_some_yaml_yml_files_are_invalid (test_invalid_yaml_yml_duplicate_keys.InvalidYamlDuplicateKeysTests) ... ok
+test_that_validation_index_is_dictionary (test_invalid_yaml_yml_duplicate_keys.InvalidYamlDuplicateKeysTests) ... ok
+test_all_matrix_json_files_are_invalid (test_invalid_matrix_json_validation.InvalidMatrixFileTests) ... ok
+test_that_validation_index_is_dictionary (test_invalid_matrix_json_validation.InvalidMatrixFileTests) ... ok
+test_some_yaml_yml_files_are_invalid (test_invalid_yaml_yml_multi_document_validation.InvalidYamlMultiDocumentFileTests) ... Some Yaml Single documents are invalid
+✘ is tests/fixtures/invalid-yaml-configs-duplicate-keys/circle.yml valid? False ERROR: [3:1: duplication of key "machine" in mapping (key-duplicates), 11:1: duplication of key "machine" in mapping (key-duplicates)]
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+The android matrix file is invalid
+✔ is tests/fixtures/invalid-matrix-json-column/ttu-android.yml valid? True
+✔ is tests/fixtures/invalid-matrix-json-column/application.properties valid? True
+✔ is tests/fixtures/invalid-matrix-json-column/ttu-ios.yml valid? True
+✔ is tests/fixtures/invalid-matrix-json-column/ttu.yaml valid? True
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Filtering Spring Cloud Config Server's files:  ['**/ok
+test_that_validation_index_is_dictionary (test_invalid_yaml_yml_multi_document_validation.InvalidYamlMultiDocumentFileTests) ... ok
+test_some_yaml_yml_files_are_invalid (test_invalid_properties_validation.InvalidPropertiesFileTests) ... ok
+*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Some Yaml Multi documents are invalid
+✘ is tests/fixtures/invalid-yaml-configs-multiple-documents-per-config/sp_boot_sample-e2e.yml valid? False ERROR: [4:3: syntax error: expected '<document start>', but found '<block mapping start>']
+✘ is tests/fixtures/invalid-yaml-configs-multiple-documents-per-config/sp_boot_sample-dev.yml valid? False ERROR: [4:1: syntax error: could not find expected ':']
+✔ is tests/fixtures/invalid-yaml-configs-multiple-documents-per-config/application.yml valid? True
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Properties files are invalid without associated values
+✔ is tests/fixtures/invalid-properties-files/publisher-onboard_prod.yml valid? True
+✔ is tests/fixtures/invalid-properties-files/publisher-onboard_preprod.yml valid? Truetest_that_validation_index_is_dictionary (test_invalid_properties_validation.InvalidPropertiesFileTests) ... ok
+test_some_yaml_yml_files_are_invalid (test_invalid_yaml_yml_single_document_validation.InvalidYamlSingleDocumentFileTests) ... ok
+test_that_validation_index_is_dictionary (test_invalid_yaml_yml_single_document_validation.InvalidYamlSingleDocumentFileTests) ...
+✘ is tests/fixtures/invalid-properties-files/publisher.properties valid? False ERROR: local variable 'wspacere' referenced before assignment
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Some Yaml Single documents are invalid
+✔ is tests/fixtures/invalid-yaml-configs-single-documents/publisher-prd.yml valid? True
+✘ is tests/fixtures/invalid-yaml-configs-single-documents/publisher-onboard_preprod.yml valid? False ERROR: [5:4: syntax error: mapping values are not allowed here]
+✔ is tests/fixtures/invalid-yaml-configs-single-documents/publisher-qal.yml valid? True
+✔ is tests/fixtures/invalid-yaml-configs-single-documents/publisher.properties valid? True
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Filtering Spring Cloud Config Server's files: ok
+test_all_properties_are_valid (test_all_valid_config_validation.AllSuccessfulTests) ... ok
+test_that_validation_index_is_dictionary (test_all_valid_config_validation.AllSuccessfulTests) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 6.315s
+
+OK
+ ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+All config files are valid
+✔ is tests/fixtures/all-valid-config/publisher.properties valid? True
+✔ is tests/fixtures/all-valid-config/application-multi-documents.yml valid? True
+✔ is tests/fixtures/all-valid-config/publisher-onboard_preprod.yml valid? True
+Filtering Spring Cloud Config Server's files:  ['**/*.json', '**/*.yaml', '**/*.yml', '**/*.properties']
+Removing intermediate container 209c14f497a8
+ ---> fb2165f8803e
+Successfully built fb2165f8803e
+Successfully tagged validator-tests:latest
+```
+
+## Running with Python local
 
 Make sure to run all the test cases after making changes to the script.
 
-```
+* Make sure to install the `pip install -r requirements.txt`
+
+```console
 $ python -m unittest discover -v tests
 test_all_matrix_json_files_are_invalid (test_invalid_matrix_json_validation.InvalidMatrixFileTests) ... The android matrix file is invalid
 is tests/fixtures/invalid-matrix-json-column/ttu-android.yml valid? True
@@ -184,7 +258,7 @@ OK
 
 Just use python with the `-m` switch to indicate the test module to be executed.
 
-```
+```console
 $ python -m tests.test_invalid_matrix_json_validation
 test_all_matrix_json_files_are_invalid (__main__.InvalidMatrixFileTests) ... The android matrix file is invalid
 is tests/fixtures/invalid-matrix-json-column/ttu-android.yml valid? True
@@ -202,41 +276,9 @@ Ran 2 tests in 0.026s
 OK
 ```
 
-## Validating Pull Request execution.
-
-Just update the data docker container with the new value.
-
-```
-~/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-validator on  feature/make-validator-oop! ⌚ 14:25:46
-$ docker cp validate_config_files.py data:/home/git/test.git/hooks/pre-receive
-```
-
-Then, execute the command to push new commits to the test origin server.
-
-```
-~/dev/github/intuit/servicesplatform-tools/intuit-spring-cloud-config-validator/ttu-config on  master ⌚ 14:25:55
-$ GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 52311 -i ../id_rsa" git push -u test master
-Warning: Permanently added '[192.168.154.132]:52311' (ECDSA) to the list of known hosts.
-Counting objects: 214, done.
-Delta compression using up to 2 threads.
-Compressing objects: 100% (100/100), done.
-Writing objects: 100% (214/214), 21.50 KiB | 0 bytes/s, done.
-Total 214 (delta 127), reused 184 (delta 109)
-remote: ##################################################
-remote: ###### Intuit Spring Cloud Config Validator 1.0.0 #######
-remote: ##################################################
-remote: Processing base=0000000000000000000000000000000000000000 commit=6ff408ac89564c994925c46847d775fff940caa3 ref=refs/heads/master
-remote: => Validating SHA 6ff408ac89564c994925c46847d775fff940caa3
-remote: ✘ File .matrix-android.json is NOT valid: Extra data: line 2 column 11 - line 29 column 1 (char 11 - 394)
-remote: ✔ File .matrix-ios.json is valid!
-To git@192.168.154.132:test.git
- ! [remote rejected] master -> master (pre-receive hook declined)
-error: failed to push some refs to 'git@192.168.154.132:test.git'
-```
-
 ## Code Coverage
 
-> Based on the following: 
+> Based on the following:
 > * https://coverage.readthedocs.io/en/coverage-4.2/source.html#source
 > * https://coverage.readthedocs.io/en/coverage-4.2/
 > * https://github.com/audreyr/how-to/blob/master/python/use_coverage_with_unittest.rst
@@ -279,132 +321,3 @@ Or you can view the HTML reports, just like the following:
 coverage html
 open html_cov/index.html
 ```
-
-# Production Deployment
-
-* Base image is at the following:
-
-[![resolution](http://dockeri.co/image/intuit/intuit-spring-cloud-config-validator "Intuit Spring Cloud Config Validator Docker Image")](https://hub.docker.com/r/intuit/intuit-spring-cloud-config-validator/)
-
-* The image was built using the steps at https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-environment/#creating-a-pre-receive-hook-environment-using-docker.
-
-After building the image, you may follow these steps to validate the image locally:
-
-* Build/Pull the Validator Image.
-* Export the Image as a `Docker environment` in `tar.gz`.
-* Test it locally.
-* Test it in your Github Enterprise appliance https://github-dev.company.com.
-
-```
-ssh-keygen: generating new host keys: RSA DSA ECDSA ED25519
-Password for git changed by root
-Generating public/private rsa key pair.
-Your identification has been saved in /home/git/.ssh/id_rsa.
-Your public key has been saved in /home/git/.ssh/id_rsa.pub.
-The key fingerprint is:
-SHA256:bdkjJt2tMpsAQpnTSTggtJLydoGxTXF5PONj9Hte1iM git@03c849f93444
-The key's randomart image is:
-+---[RSA 4096]----+
-|o.o.oooo         |
-| o.*o*..*        |
-|+.o B.o+ +       |
-|o. . o  +o.+ .   |
-|  o o ..S.B.+ .. |
-| . . . . +...Eo..|
-|        . oo.o. .|
-|         . =.    |
-|          o      |
-+----[SHA256]-----+
-Initialized empty Git repository in /home/git/test.git/
- ---> ec5d5e5dffbf
-Removing intermediate container 6538221061d0
-Step 4/6 : VOLUME /home/git/.ssh /home/git/test.git/hooks
- ---> Running in 444b3582ba16
- ---> dabecc6b117c
-Removing intermediate container 444b3582ba16
-Step 5/6 : WORKDIR /home/git
- ---> 0bb6afae2a22
-Removing intermediate container e563010c2cac
-Step 6/6 : CMD /usr/sbin/sshd -D
- ---> Running in 8ea4e5cde242
- ---> c47928816175
-Removing intermediate container 8ea4e5cde242
-Successfully built c47928816175
-Successfully tagged github-enterprise-pre-receive-hook-base:latest
-```
-
-## Build the Validator Image
-
-```
-$ docker build -t springboot-config-verification .
-Sending build context to Docker daemon  594.4kB
-Step 1/4 : FROM github-enterprise-pre-receive-hook-base
- ---> c47928816175
-Step 2/4 : MAINTAINER Marcello_deSales@intuit.com
- ---> Using cache
- ---> 5fdcf852ec6d
-Step 3/4 : RUN apk add --no-cache py-pip &&   pip install yamllint pyyaml pyjavaproperties
- ---> Using cache
- ---> a9336ec4e702
-Step 4/4 : ADD ./validate_config_files.py /home/git/test.git/hooks/pre-receive
- ---> b69fb82ef455
-Removing intermediate container d3a1d2d5e3ae
-Successfully built b69fb82ef455
-Successfully tagged springboot-config-verification:latest
-```
-
-## Export the Docker Environment as tar.gz
-
-* Run a container
-
-```
-$ docker create --name config-validator intuit/intuit-spring-cloud-config-validator /bin/true
-c1a8b466d00d4d81ef043c85c12b91019e1859ce8342d2afb91d803a6fc20a3d
-```
-
-* Export the image as tar.gz
-
-```
-
-$ docker export config-validator | gzip > intuit-spring-cloud-config-validator-latest.tar.gz
-$ ls -lah intuit-spring-cloud-config-validator-latest.tar.gz
--rw-r--r--  1 mdesales    27M Jun  5 18:25 intuit-spring-cloud-config-validator-latest.tar.gz
-```
-
-* Provide the `.tar.gz` file to your OPS Engineer to deploy it in your company's Github Enterprise.
-
-## Test in Github Dev
-
-Once the environment has been uploaded to the dev environment, push the current script to it. Github Pre-Receive hook will require your OPS Engineer to specify the scripts to be placed inside the volume of the base Image above.
-
-```
-$ git remote add dev git@github-dev.company.com:services-configuration/intuit-spring-cloud-config-validator.git
-
-$ git fetch dev
-remote: Counting objects: 51, done.
-remote: Compressing objects: 100% (19/19), done.
-remote: Total 51 (delta 34), reused 49 (delta 32), pack-reused 0
-Unpacking objects: 100% (51/51), done.
-From github-dev.company.com:services-configuration/intuit-spring-cloud-config-validator
- * [new branch]      master     -> dev/master
-
-$ git fetch dev
-remote: Counting objects: 51, done.
-remote: Compressing objects: 100% (19/19), done.
-remote: Total 51 (delta 34), reused 49 (delta 32), pack-reused 0
-Unpacking objects: 100% (51/51), done.
-From github-dev.company.com:services-configuration/intuit-spring-cloud-config-validator
- * [new branch]      master     -> dev/master
-```
-
-From now on, you can make changes to the validator and verify it using the
-test repos specified below.
-
-## Test repos for validation
-
-Now you can test the configuration in the Config Repos:
-
-* https://github-dev.company.com/MDESALES/config-repo
-* https://github-dev.company.com/MDESALES/intuit-spring-cloud-config-publisher-config
-
-> NOTE: Make sure the validator is enabled in those repos.
