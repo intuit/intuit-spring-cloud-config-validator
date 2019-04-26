@@ -251,7 +251,8 @@ class Validator:
     """Lists all the configuration files in a given directory"""
 
     # Valid configuration files
-    configMatches = ["*.json", "*.yaml", "*.yml", "*.properties", ".*matrix*.json"]
+    configMatches = ["**/*.json", "**/*.yaml", "**/*.yml", "**/*.properties"]
+    print "Filtering Spring Cloud Config Server's compatible files: ", configMatches
 
     # Get all the types config files based on the matches.
     allConfigs = []
