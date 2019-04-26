@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Make sure to append one of the sys paths the current one
-# So that we can append context. Evaluated when running the discover mode as 
+# So that we can append context. Evaluated when running the discover mode as
 # "python -m unittest discover -v tests"
 # http://stackoverflow.com/questions/11536764/how-to-fix-attempted-relative-import-in-non-package-even-with-init-py/19190695#19190695
 if __name__ == '__main__' and __package__ is None:
@@ -35,7 +35,7 @@ class InvalidYamlMultiDocumentFileTests(unittest.TestCase, ValidationAssertions)
       self.assertIn(FIXTURE_DIR, filePath)
 
       # Only the matrix android file is broken
-      if "sp_boot_sample-qal.yml" in filePath or "sp_boot_sample-e2e.yml" in filePath or "application.yml" in filePath:
+      if "sp_boot_sample-dev.yml" in filePath or "sp_boot_sample-e2e.yml" in filePath:
         self.assertThatConfigIsInvalid(filePath, validationObject)
 
       else:
