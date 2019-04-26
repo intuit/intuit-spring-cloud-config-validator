@@ -313,9 +313,9 @@ class ShellExecution:
     """Runs the validation on a given directory, printing the report about each file verified"""
 
     # Starting the process
-    print "##################################################"
-    print "###### Spring Cloud Config Validator " + VERSION + " #######"
-    print "##################################################"
+    print "#####################################################"
+    print "### Intuit Spring Cloud Config Validator " + VERSION + " ####"
+    print "#####################################################"
 
     #for key in os.environ.keys():
     #  print "%30s %s \n" % (key,os.environ[key])
