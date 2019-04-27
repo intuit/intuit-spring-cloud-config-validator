@@ -111,7 +111,7 @@ This is to verify that a Config repo can be validated with the hook.
 
 * Just clone the repo and try to push errors
 
-[![asciicast](https://asciinema.org/a/9rnFNiv2U8sg56V2nXHAuRNR6.svg)](https://asciinema.org/a/9rnFNiv2U8sg56V2nXHAuRNR6)
+[![asciicast](https://asciinema.org/a/fokS3lAgx8O8I1vuVFvxSTqON.svg)](https://asciinema.org/a/fokS3lAgx8O8I1vuVFvxSTqON)
 
 ### Change process
 
