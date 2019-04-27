@@ -84,7 +84,18 @@ Once the environment has been uploaded to the dev environment, push the current 
 2. Enable the Hook in Settings
 3. Attempt to push config with errors
 
+### Github Enteprise Setup
+
+* Push a forked version of this repository to Github Prod Enterprise
+* With the Environment, that is, the Docker image in the `tar.gz` format, upload through the Admin setup of Github Enterprise
+  * Manage it at `Admin Center -> Pre-receive hooks -> Manage Hooks -> Intuit Spring Cloud Config Validator`
+* Select the Github repo where the this repo is pushed, and choose the script `validate_config_files.py`
+
+![github-admin-pre-receive-hook-setup](https://user-images.githubusercontent.com/131457/56842586-8c77ad00-684b-11e9-8dab-796835d185f5.png)
+
 ### Enable The Hook in Settings
+
+This is to verify that a Config repo can be validated with the hook.
 
 * After pushing this repo, go to the Settings section of the repo and `Hooks`
 
@@ -101,6 +112,14 @@ Once the environment has been uploaded to the dev environment, push the current 
 * Just clone the repo and try to push errors
 
 [![asciicast](https://asciinema.org/a/9rnFNiv2U8sg56V2nXHAuRNR6.svg)](https://asciinema.org/a/9rnFNiv2U8sg56V2nXHAuRNR6)
+
+### Change process
+
+* The Environment, or Docker Image in `.tar.gz` format, only needs to be pushed to Github Enterprise if any line on `requirements.txt` changes. That is, if any of the python dependencies has changed.
+
+> **ATTENTION**: The script under to Forked repo MUST be managed by the owners of this fork. Any live updates on this script will reflect on the Validator throughout all Github Repos.
+
+* So, updates on the validator script MUST be coordinated and the suggested way is to first do this change process in a DEV environment and repeat it in PROD after it has been verified!
 
 # Development
 
