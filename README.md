@@ -12,7 +12,7 @@ Go to the [Wiki](https://github.com/intuit/intuit-spring-cloud-config-validator/
 
 * Python Base Image
 
-[![resolution](http://dockeri.co/image/marcellodesales/github-enterprise-prereceive-hook-base "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-bas/)
+[![resolution](http://dockeri.co/image/marcellodesales/github-enterprise-prereceive-hook-base "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-base/)
 
 # Validations
 
