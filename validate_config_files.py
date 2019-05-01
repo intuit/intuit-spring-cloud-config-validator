@@ -32,7 +32,7 @@ class ExecutionContext:
         * python -m unittest discover -v tests
     """
     # http://stackoverflow.com/questions/4858100/how-to-list-imported-modules/4858123#4858123
-    return 'unittest' in sys.modules.keys() or 'tests.sys' in sys.modules.keys()
+    return 'unittest' in list(sys.modules.keys()) or 'tests.sys' in list(sys.modules.keys())
 
   @staticmethod
   def getCurrentDirPath():
@@ -56,7 +56,7 @@ class ExecutionContext:
 
     # If the execution is on github
     if not ExecutionContext.isOnGithub():
-      print "=> Validating repo " + currentDirPath
+      print("=> Validating repo " + currentDirPath)
 
     else:
       # https://help.github.com/enterprise/2.6/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/#writing-a-pre-receive-hook-script
@@ -72,20 +72,20 @@ class ExecutionContext:
 
       # Deleting a branch should NOT validate anything... skipping...
       if "0000000" in commit:
-        print "Deleting branch... Skip validation"
+        print("Deleting branch... Skip validation")
         exit(0)
 
       if "0000000" in base:
-        print "Validating new branch..."
+        print("Validating new branch...")
 
-      print "Processing commit=" + commit + " ref=" + ref
+      print("Processing commit=" + commit + " ref=" + ref)
 
       currentDirPath = Validator.processPreReceivehookFilesInGithub(base, commit)
       if "0000000" not in base:
-        print "=> Validating " + base + ".." + commit
+        print("=> Validating " + base + ".." + commit)
 
       else:
-        print "=> Validating SHA " + commit
+        print("=> Validating SHA " + commit)
 
     return currentDirPath
 
@@ -269,7 +269,7 @@ class Validator:
 
     # Valid configuration files
     configMatches = ["**/*.json", "**/*.yaml", "**/*.yml", "**/*.properties"]
-    print "Filtering Spring Cloud Config Server's files: ", configMatches
+    print("Filtering Spring Cloud Config Server's files: ", configMatches)
 
     # Get all the types config files based on the matches.
     allConfigs = []
@@ -313,9 +313,9 @@ class ShellExecution:
     """Runs the validation on a given directory, printing the report about each file verified"""
 
     # Starting the process
-    print "#####################################################"
-    print "#### Intuit Spring Cloud Config Validator " + VERSION + " #####"
-    print "#####################################################"
+    print("#####################################################")
+    print("#### Intuit Spring Cloud Config Validator " + VERSION + " #####")
+    print("#####################################################")
 
     #for key in os.environ.keys():
     #  print "%30s %s \n" % (key,os.environ[key])
@@ -332,15 +332,15 @@ class ShellExecution:
     noErrors = True
 
     # Iterate over the index of the verifications
-    for filePath, isValid in validationIndex.iteritems():
+    for filePath, isValid in validationIndex.items():
       filePath = filePath if not ExecutionContext.isOnGithub() else str.replace(filePath, currentDirPath + "/", "")
       if isValid == True:
-        print "(v) File " + filePath + " is valid!"
+        print("(v) File " + filePath + " is valid!")
 
       else:
         isValid = isValid if not ExecutionContext.isOnGithub() else str.replace(str(isValid), currentDirPath + "/", "")
         # Only when we are running in github
-        print "(x) File " + filePath + " is invalid: " + str(isValid)
+        print("(x) File " + filePath + " is invalid: " + str(isValid))
         noErrors = False
 
     # Exist with the value for errors
