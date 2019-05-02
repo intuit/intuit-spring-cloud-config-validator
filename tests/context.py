@@ -43,12 +43,12 @@ def printFileValidationStatus(filePath, validationObject):
   message = str(isValid) if isValid else str(isValid) + " ERROR: " + str(validationObject)
 
   # The V of successful in green
-  v = ShellColor.OKGREEN + str(u'\u2714'.encode('UTF-8'))
+  v = ShellColor.OKGREEN + str('\u2714'.encode('UTF-8'))
   # The X of failure in red
-  x = ShellColor.FAIL + str(u'\u2718'.encode('UTF-8'))
+  x = ShellColor.FAIL + str('\u2718'.encode('UTF-8'))
   shellStatus = v if isValid else x
 
-  print shellStatus + " is " + getRelativeFixturePath(filePath) + " valid? " + message + ShellColor.ENDC
+  print(shellStatus + " is " + getRelativeFixturePath(filePath) + " valid? " + message + ShellColor.ENDC)
 
 class ValidationAssertions:
   """Validation Assertions for the test cases to validate on the values."""
