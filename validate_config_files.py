@@ -169,7 +169,10 @@ class ConfigFileValidator:
     yamlLintConfig = YamlLintConfig(yaml.safe_dump(conf))
 
     # ymlDocs = yaml.load(open(filePath), Loader = yaml.Loader)
-    lintError = list(linter.run(open(filePath), yamlLintConfig));
+    lintError = None
+    with open(filePath) as yamlFile:
+      lintError = list(linter.run(yamlFile, yamlLintConfig))
+      yamlFile.close()
 
     if lintError:
       return lintError
