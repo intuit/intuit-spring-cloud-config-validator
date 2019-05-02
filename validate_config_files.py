@@ -118,7 +118,7 @@ class GitRepo:
 
     # Filter the non-empty, non-repeated elements as the command returns a\nb\n\c
     # http://stackoverflow.com/questions/33944647/what-is-the-most-pythonic-way-to-filter-a-set/33944663#33944663
-    return [x for x in set(results.strip().split('\n')) if x != '']
+    return [x for x in set(results.decode('utf-8').strip().split('\n')) if x != '']
 
   @staticmethod
   def openCommitFileContent(fileName, commit = "HEAD"):
