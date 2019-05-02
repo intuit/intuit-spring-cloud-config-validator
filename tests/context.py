@@ -42,10 +42,11 @@ def printFileValidationStatus(filePath, validationObject):
   isValid = isConfigValid(validationObject)
   message = str(isValid) if isValid else str(isValid) + " ERROR: " + str(validationObject)
 
+  # https://stackoverflow.com/questions/6812031/how-to-make-unicode-string-with-python3/6812069#6812069 (added , UTF-8 param to str)
   # The V of successful in green
-  v = ShellColor.OKGREEN + str('\u2714'.encode('UTF-8'))
+  v = ShellColor.OKGREEN + str('\u2714'.encode('UTF-8'), 'UTF-8')
   # The X of failure in red
-  x = ShellColor.FAIL + str('\u2718'.encode('UTF-8'))
+  x = ShellColor.FAIL + str('\u2718'.encode('UTF-8'), 'UTF-8')
   shellStatus = v if isValid else x
 
   print(shellStatus + " is " + getRelativeFixturePath(filePath) + " valid? " + message + ShellColor.ENDC)
