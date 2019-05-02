@@ -199,7 +199,7 @@ class Validator:
 
     # Save the file in the context
     with open(filePath, "w") as text_file:
-      text_file.write(content)
+      text_file.write(content.decode('UTF-8'))
 
     return filePath
 
