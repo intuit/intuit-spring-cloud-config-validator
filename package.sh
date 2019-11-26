@@ -15,8 +15,17 @@ echo "${red}##### INTUIT SPRING CLOUD CONFIG VALIDATOR ${VERSION} #####${yellow}
 echo ""
 date
 echo ""
-echo "${green}* Packaging the Github Enterprise artifact for upload"
-echo "${green}* File will be: ${yellow}intuit-spring-cloud-config-validator-latest.tar.gz"
+
+if [ "${ACTION}" == "package" ]; then
+  echo "${green}* Packaging the Github Enterprise artifact for upload"
+
+elif  [ "${ACTION}" == "pull" ]; then
+  echo "${green}* Pulling the Github Enterprise artifact from Docker Hub"
+
+else
+  echo "${red}ERROR: set ACTION=package | pull in file '.env'"
+fi
+echo "${green}* File will be: ${yellow}intuit-spring-cloud-config-validator-${VERSION}.tar.gz"
 
 echo ""
 echo "${red}==========--------- Building the new docker image -----------=========="
@@ -24,7 +33,12 @@ echo ""
 echo "${green}* docker-compose build${yellow}"
 echo ""
 
-docker-compose build
+if [ "${ACTION}" == "package" ]; then
+  docker-compose build
+
+elif  [ "${ACTION}" == "pull" ]; then
+  docker-compose pull
+fi
 
 echo ""
 DOCKER_IMAGE=intuit/intuit-spring-cloud-config-validator:${VERSION}
@@ -47,17 +61,17 @@ docker create --name config-validator ${DOCKER_IMAGE} /bin/true
 echo ""
 echo "${red}==========--------- Export .tar.gz -----------=========="
 echo ""
-echo "${green}* docker export config-validator | gzip > intuit-spring-cloud-config-validator-latest.tar.gz${yellow}"
+echo "${green}* docker export config-validator | gzip > intuit-spring-cloud-config-validator-${VERSION}.tar.gz${yellow}"
 echo ""
 
-docker export config-validator | gzip > intuit-spring-cloud-config-validator-latest.tar.gz
+docker export config-validator | gzip > intuit-spring-cloud-config-validator-${VERSION}.tar.gz
 
 echo ""
 echo "${red}==========--------- Clean up -----------=========="
 echo ""
-echo "${green}* docker stop config-validator && docker rm config-validator && ls -la intuit-spring-cloud-config-validator-latest.tar.gz${yellow}"
+echo "${green}* docker stop config-validator && docker rm config-validator && ls -la intuit-spring-cloud-config-validator-${VERSION}.tar.gz${yellow}"
 echo ""
-docker stop config-validator && docker rm config-validator && ls -la intuit-spring-cloud-config-validator-latest.tar.gz
+docker stop config-validator && docker rm config-validator && ls -la intuit-spring-cloud-config-validator-${VERSION}.tar.gz
 echo ""
 
 echo "${red}==========--------- Upload to Github Enterprise -----------=========="
@@ -66,8 +80,8 @@ echo "${yellow}"
 date
 
 echo ""
-echo "${green}You can now install the new version on your Github Enterprise installation"
-echo "${green}* File to upload: ${yellow}$(pwd)/intuit-spring-cloud-config-validator-latest.tar.gz"
+echo "${green}You can now install version '${VERSION}' on your Github Enterprise installation"
+echo "${green}* File to upload: ${yellow}$(pwd)/intuit-spring-cloud-config-validator-${VERSION}.tar.gz"
 echo ""
 echo "${green}* Your users can now enable this ${yellow}Pre-receive hook${green} on a github repo to verify it"
 echo ""

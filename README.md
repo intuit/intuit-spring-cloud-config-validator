@@ -34,13 +34,26 @@ Run the following to setup a local development environment:
 
 # Package for Github Enterprise
 
-* When you finish developing your hook, just run:
+* You can package the latest version of this branch by making sure `.env` file has the following:
+* VERSION: The version to apply the action
+* ACTION: the action to perform
+  * `pacakge` makes a tar.gz by building q docker image of the current files
+  * `pull` downloads the given version from the Docker Registry
+
+```sh
+ACTION=package
+VERSION=1.3.0
+```
+
+* Just run
 
 ```console
 ./package.sh
 ```
 
 [![asciicast](https://asciinema.org/a/mzKWawCw5lZlhxIGOtHv1rJij.svg)](https://asciinema.org/a/mzKWawCw5lZlhxIGOtHv1rJij)
+
+
 
 ## Create Git Server
 
