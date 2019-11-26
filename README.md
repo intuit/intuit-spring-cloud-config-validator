@@ -12,13 +12,7 @@ Go to the [Wiki](https://github.com/intuit/intuit-spring-cloud-config-validator/
 
 * Python Base Image
 
-[![resolution](http://dockeri.co/image/marcellodesales/github-enterprise-prereceive-hook-base "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-bas/)
-
-# Setup
-
-Go to the section for Production deployment as described below.
-
-After your Github Enterprise is setup, make sure to follow the steps at the [Setup Config Repo Pre-receive Hook](https://github.com/intuit/intuit-spring-cloud-config-validator/wiki/Setup-Config-Repo-Pre-receive-Hook) section.
+[![resolution](http://dockeri.co/image/marcellodesales/github-enterprise-prereceive-hook-base "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-base/)
 
 # Validations
 
@@ -30,11 +24,13 @@ This is useful for teams using Spring Cloud Config repos and wants to be rest-as
 
 # Setup
 
-* Docker Engine: latest is recommended with `multi-stage` support
-* Docker Compose: latest is recommended
+* `Docker Engine`: latest is recommended with `multi-stage` support
+* `Docker Compose`: latest is recommended
 
-1. Create a Git server with the pre-receive hook `validate_config_files.py`.
-2. Using `test.sh` test a given github config repo locally
+Run the following to setup a local development environment:
+
+1. `setup-github-simulator.sh`: Create a Git server with the pre-receive hook script `validate_config_files.py`
+2. `test.sh`: test a given github config repo locally by attempting to push to the test git server
 
 ## Create Git Server
 
@@ -111,7 +107,7 @@ This is to verify that a Config repo can be validated with the hook.
 
 * Just clone the repo and try to push errors
 
-[![asciicast](https://asciinema.org/a/9rnFNiv2U8sg56V2nXHAuRNR6.svg)](https://asciinema.org/a/9rnFNiv2U8sg56V2nXHAuRNR6)
+[![asciicast](https://asciinema.org/a/fokS3lAgx8O8I1vuVFvxSTqON.svg)](https://asciinema.org/a/fokS3lAgx8O8I1vuVFvxSTqON)
 
 ### Change process
 
