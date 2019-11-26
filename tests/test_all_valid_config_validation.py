@@ -26,8 +26,8 @@ class AllSuccessfulTests(unittest.TestCase, ValidationAssertions):
     self.assertTrue(len(self.validationIndex) > 0)
 
   def test_all_properties_are_valid(self):
-    print ShellColor.WARNING + "All config files are valid" + ShellColor.ENDC
-    for filePath, validationObject in self.validationIndex.iteritems():
+    print(ShellColor.WARNING + "All config files are valid" + ShellColor.ENDC)
+    for filePath, validationObject in self.validationIndex.items():
       printFileValidationStatus(filePath, validationObject)
 
       # Verify if the directory is in the file path

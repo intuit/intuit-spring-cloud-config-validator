@@ -10,7 +10,7 @@ Go to the [Wiki](https://github.com/intuit/intuit-spring-cloud-config-validator/
 
 [![resolution](http://dockeri.co/image/intuit/intuit-spring-cloud-config-validator "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/intuit/intuit-spring-cloud-config-validator/)
 
-* Python Base Image
+* Golang, Python2 and Python3 images at the following:
 
 [![resolution](http://dockeri.co/image/marcellodesales/github-enterprise-prereceive-hook-base "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-base/)
 
@@ -31,6 +31,24 @@ Run the following to setup a local development environment:
 
 1. `setup-github-simulator.sh`: Create a Git server with the pre-receive hook script `validate_config_files.py`
 2. `test.sh`: test a given github config repo locally by attempting to push to the test git server
+
+# Package for Github Enterprise
+
+* You can package the latest version of this branch by making sure `.env` file has the following:
+* VERSION: The version to apply the action
+* ACTION: the action to perform
+  * `pacakge` makes a tar.gz by building q docker image of the current files
+  * `pull` downloads the given version from the Docker Registry
+
+```sh
+ACTION=package
+VERSION=1.3.0
+```
+
+* Just run `./package.sh` after setting up the proper values on `.env` as specified above.
+* See building from sources or pulling from an existing version below
+
+[![asciicast](https://asciinema.org/a/iXe3m2rYyyszG2aJ053WjYmK2.svg)](https://asciinema.org/a/iXe3m2rYyyszG2aJ053WjYmK2)
 
 ## Create Git Server
 

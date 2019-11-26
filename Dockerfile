@@ -1,30 +1,30 @@
 ####### Build Image
 
-FROM marcellodesales/github-enterprise-prereceive-hook-base as tests
-
-# Install dependencies
-RUN apk add --no-cache py-pip && \
-    pip2 install coverage
+FROM marcellodesales/git-pre-receive-hook:python3 as tests
 
 # Make a cache-eligible dependencies
-COPY requirements.txt /build/requirements.txt
+COPY requirements-tests.txt /build/requirements.txt
 
 # Install dependencies
-RUN pip2 install -r /build/requirements.txt
+RUN pip install -r /build/requirements.txt
 
 # Copy resources
 COPY ./tests /build/tests
 COPY ./validate_config_files.py /build
 
+# Glob2 warnings https://github.com/miracle2k/python-glob2/issues/24
+ENV PYTHONWARNINGS="ignore::DeprecationWarning:glob2"
+
 RUN coverage run -m unittest discover -v /build/tests
 
 ###### Runtime Image
 
-FROM marcellodesales/github-enterprise-prereceive-hook-base as runtime
+FROM marcellodesales/git-pre-receive-hook:python3 as runtime
 
-RUN apk add --no-cache py-pip
-
-COPY --from=tests /build/requirements.txt requirements.txt
-RUN pip2 install -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
 COPY --from=tests /build/validate_config_files.py /home/git/test.git/hooks/pre-receive
+
+# Glob2 warnings https://github.com/miracle2k/python-glob2/issues/24
+ENV PYTHONWARNINGS="ignore::DeprecationWarning:glob2"

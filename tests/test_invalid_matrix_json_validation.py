@@ -26,8 +26,8 @@ class InvalidMatrixFileTests(unittest.TestCase, ValidationAssertions):
     self.assertTrue(len(self.validationIndex) > 0)
 
   def test_all_matrix_json_files_are_invalid(self):
-    print ShellColor.WARNING + "The android matrix file is invalid" + ShellColor.ENDC
-    for filePath, validationObject in self.validationIndex.iteritems():
+    print(ShellColor.WARNING + "The android matrix file is invalid" + ShellColor.ENDC)
+    for filePath, validationObject in self.validationIndex.items():
       isValid = isConfigValid(validationObject)
       printFileValidationStatus(filePath, validationObject)
 
