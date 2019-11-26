@@ -45,15 +45,10 @@ ACTION=package
 VERSION=1.3.0
 ```
 
-* Just run
+* Just run `./package.sh` after setting up the proper values on `.env` as specified above.
+* See building from sources or pulling from an existing version below
 
-```console
-./package.sh
-```
-
-[![asciicast](https://asciinema.org/a/mzKWawCw5lZlhxIGOtHv1rJij.svg)](https://asciinema.org/a/mzKWawCw5lZlhxIGOtHv1rJij)
-
-
+[![asciicast](https://asciinema.org/a/iXe3m2rYyyszG2aJ053WjYmK2.svg)](https://asciinema.org/a/iXe3m2rYyyszG2aJ053WjYmK2)
 
 ## Create Git Server
 
