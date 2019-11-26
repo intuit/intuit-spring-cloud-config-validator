@@ -10,7 +10,7 @@ Go to the [Wiki](https://github.com/intuit/intuit-spring-cloud-config-validator/
 
 [![resolution](http://dockeri.co/image/intuit/intuit-spring-cloud-config-validator "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/intuit/intuit-spring-cloud-config-validator/)
 
-* Python Base Image
+* Golang, Python2 and Python3 images at the following:
 
 [![resolution](http://dockeri.co/image/marcellodesales/github-enterprise-prereceive-hook-base "Github Enterprise Pre-Receive Hook Base Image")](https://hub.docker.com/r/marcellodesales/github-enterprise-prereceive-hook-base/)
 
@@ -31,6 +31,16 @@ Run the following to setup a local development environment:
 
 1. `setup-github-simulator.sh`: Create a Git server with the pre-receive hook script `validate_config_files.py`
 2. `test.sh`: test a given github config repo locally by attempting to push to the test git server
+
+# Package for Github Enterprise
+
+* When you finish developing your hook, just run:
+
+```console
+./package.sh
+```
+
+[![asciicast](https://asciinema.org/a/mzKWawCw5lZlhxIGOtHv1rJij.svg)](https://asciinema.org/a/mzKWawCw5lZlhxIGOtHv1rJij)
 
 ## Create Git Server
 
