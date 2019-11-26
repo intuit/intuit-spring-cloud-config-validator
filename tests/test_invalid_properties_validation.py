@@ -26,8 +26,8 @@ class InvalidPropertiesFileTests(unittest.TestCase, ValidationAssertions):
     self.assertTrue(len(self.validationIndex) > 0)
 
   def test_some_yaml_yml_files_are_invalid(self):
-    print ShellColor.WARNING + "Properties files are invalid without associated values" + ShellColor.ENDC
-    for filePath, validationObject in self.validationIndex.iteritems():
+    print(ShellColor.WARNING + "Properties files are invalid without associated values" + ShellColor.ENDC)
+    for filePath, validationObject in self.validationIndex.items():
       isValid = isConfigValid(validationObject)
       printFileValidationStatus(filePath, validationObject)
 
